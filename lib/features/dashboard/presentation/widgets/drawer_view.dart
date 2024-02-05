@@ -1,5 +1,6 @@
 import 'package:feelify/features/dashboard/presentation/dashboard_cubit.dart';
 import 'package:feelify/features/dashboard/presentation/widgets/tab.dart';
+import 'package:feelify/features/data/dashboard_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,24 +33,27 @@ class DrawerView extends StatelessWidget {
                     children: [
                       TabView(
                         isSelected: state.currentIndex == 0,
-                        text: "Dashboard",
+                        text: DashboardSection.dashboard.name,
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(0);
                         },
+                        prefix: const Icon(Icons.dashboard_outlined),
                       ),
                       TabView(
                         isSelected: state.currentIndex == 1,
-                        text: 'Candidates',
+                        text: DashboardSection.candidate.name,
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(1);
                         },
+                        prefix: const Icon(Icons.people_outline),
                       ),
                       TabView(
                         isSelected: state.currentIndex == 2,
-                        text: 'Companies',
+                        text: DashboardSection.companies.name,
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(2);
                         },
+                        prefix: const Icon(Icons.business),
                       )
                     ],
                   ),
