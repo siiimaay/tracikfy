@@ -1,8 +1,11 @@
+import 'package:feelify/features/candidate/presentation/candidate_view.dart';
 import 'package:feelify/features/dashboard/presentation/dashboard_cubit.dart';
+import 'package:feelify/features/dashboard/presentation/dashboard_view.dart';
 import 'package:feelify/features/dashboard/presentation/widgets/tab.dart';
 import 'package:feelify/features/data/dashboard_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'logo.dart';
 
@@ -36,6 +39,7 @@ class DrawerView extends StatelessWidget {
                         text: DashboardSection.dashboard.name,
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(0);
+                          context.go(DashboardView.route);
                         },
                         prefix: const Icon(Icons.dashboard_outlined),
                       ),
@@ -44,6 +48,7 @@ class DrawerView extends StatelessWidget {
                         text: DashboardSection.candidate.name,
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(1);
+                          context.go(DashboardView.route);
                         },
                         prefix: const Icon(Icons.people_outline),
                       ),
@@ -52,6 +57,7 @@ class DrawerView extends StatelessWidget {
                         text: DashboardSection.companies.name,
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(2);
+                          context.go(CandidateView.route);
                         },
                         prefix: const Icon(Icons.business),
                       )
