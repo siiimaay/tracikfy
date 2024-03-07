@@ -18,9 +18,7 @@ class DashboardView extends StatelessWidget {
       child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(),
-          drawer: DrawerView(
-            drawerKey: _scaffoldKey,
-          ),
+          drawer: DrawerView(drawerKey: _scaffoldKey),
           body: child),
     );
   }

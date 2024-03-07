@@ -1,3 +1,4 @@
+import 'package:feelify/features/company/presentation/widgets/employee_image_widget.dart';
 import 'package:flutter/material.dart';
 
 class Frame extends StatelessWidget {
@@ -13,18 +14,15 @@ class Frame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
-      width: 159,
+      height: 300,
+      width: 300,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.amber, width: 2),
           borderRadius: BorderRadius.circular(12)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Wrap(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Text(label),
-          )
+          EmployeeImageWidget(),
+
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:feelify/features/candidate/presentation/candidate_view.dart';
+import 'package:feelify/features/company/presentation/company_view.dart';
 import 'package:feelify/features/dashboard/presentation/dashboard_cubit.dart';
 import 'package:feelify/features/dashboard/presentation/dashboard_view.dart';
 import 'package:feelify/features/dashboard/presentation/widgets/tab.dart';
@@ -11,6 +12,7 @@ import 'logo.dart';
 
 class DrawerView extends StatelessWidget {
   final GlobalKey<ScaffoldState> drawerKey;
+
   const DrawerView({Key? key, required this.drawerKey}) : super(key: key);
 
   @override
@@ -39,10 +41,10 @@ class DrawerView extends StatelessWidget {
                         isSelected: state.currentIndex == 0,
                         text: DashboardSection.dashboard.name,
                         onTap: () {
-
                           context.read<DashboardCubit>().updateSelection(0);
-                          drawerKey.currentState?.closeDrawer();
+
                           context.go(DashboardView.route);
+                          drawerKey.currentState?.closeDrawer();
                         },
                         prefix: const Icon(Icons.dashboard_outlined),
                       ),
@@ -51,8 +53,9 @@ class DrawerView extends StatelessWidget {
                         text: DashboardSection.candidate.name,
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(1);
+                          context.go(CandidateView.route);
                           drawerKey.currentState?.closeDrawer();
-                          context.go(DashboardView.route);
+
                         },
                         prefix: const Icon(Icons.people_outline),
                       ),
@@ -61,7 +64,7 @@ class DrawerView extends StatelessWidget {
                         text: DashboardSection.companies.name,
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(2);
-                          context.go(CandidateView.route);
+                          context.go(CompanyView.route);
                         },
                         prefix: const Icon(Icons.business),
                       )

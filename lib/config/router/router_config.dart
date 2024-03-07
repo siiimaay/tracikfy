@@ -1,5 +1,5 @@
 import 'package:feelify/features/candidate/presentation/candidate_view.dart';
-import 'package:feelify/features/company/company_view.dart';
+import 'package:feelify/features/company/presentation/company_view.dart';
 import 'package:feelify/features/dashboard/presentation/dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
