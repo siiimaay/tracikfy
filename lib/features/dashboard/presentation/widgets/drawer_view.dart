@@ -10,7 +10,8 @@ import 'package:go_router/go_router.dart';
 import 'logo.dart';
 
 class DrawerView extends StatelessWidget {
-  const DrawerView({Key? key}) : super(key: key);
+  final GlobalKey<ScaffoldState> drawerKey;
+  const DrawerView({Key? key, required this.drawerKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,9 @@ class DrawerView extends StatelessWidget {
                         isSelected: state.currentIndex == 0,
                         text: DashboardSection.dashboard.name,
                         onTap: () {
+
                           context.read<DashboardCubit>().updateSelection(0);
+                          drawerKey.currentState?.closeDrawer();
                           context.go(DashboardView.route);
                         },
                         prefix: const Icon(Icons.dashboard_outlined),
@@ -48,6 +51,7 @@ class DrawerView extends StatelessWidget {
                         text: DashboardSection.candidate.name,
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(1);
+                          drawerKey.currentState?.closeDrawer();
                           context.go(DashboardView.route);
                         },
                         prefix: const Icon(Icons.people_outline),

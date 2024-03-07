@@ -1,4 +1,5 @@
 import 'package:feelify/features/candidate/presentation/candidate_view.dart';
+import 'package:feelify/features/company/company_view.dart';
 import 'package:feelify/features/dashboard/presentation/dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -13,45 +14,32 @@ class AppRouterConfig {
     return _instance;
   }
 
-  AppRouterConfig._internal() {
-    router = GoRouter(routes: _routes, initialLocation: DashboardView.route);
-  }
-
-  final _routes = [
-    GoRoute(
-      path: DashboardView.route,
-      pageBuilder: (context, GoRouterState state) {
-        return const MaterialPage(child: DashboardView());
-      },
-    ),
-    GoRoute(
-      path: CandidateView.route,
-      pageBuilder: (context, GoRouterState state) {
-        return const MaterialPage(child: CandidateView());
-      },
-    ),
-  ];
-
-  /*static StatefulShellRoute _setupSideBar() {
-    return StatefulShellRoute.indexedStack(
-        branches: [
-          StatefulShellBranch(routes: [
+  final appRouter = GoRouter(
+      navigatorKey: GlobalKey<NavigatorState>(),
+      initialLocation: DashboardView.route,
+      routes: [
+        GoRoute(
+            path: DashboardView.route,
+            builder: (BuildContext context, GoRouterState state) =>
+                DashboardView()),
+        ShellRoute(
+          builder: (BuildContext context, GoRouterState state, Widget child) {
+            return DashboardView(child: child);
+          },
+          routes: [
             GoRoute(
-              path: DashboardView.route,
-              builder: (context, state) {
-                return const DashboardView();
-              },
+              path: CandidateView.route,
+              builder: (BuildContext context, GoRouterState state) =>
+                  const CandidateView(),
             ),
             GoRoute(
-              path: DashboardView.route,
-              builder: (context, state) {
-                return const CandidateView();
-              },
+              path: CompanyView.route,
+              builder: (BuildContext context, GoRouterState state) =>
+                  const CompanyView(),
             ),
-          ])
-        ],
-        pageBuilder: (context, state, navigationShell) {
-          return DashboardView()
-        });
-  }*/
+          ],
+        )
+      ]);
+
+  AppRouterConfig._internal();
 }
