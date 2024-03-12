@@ -1,4 +1,5 @@
 import 'package:feelify/config/router/router_config.dart';
+import 'package:feelify/theme/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+          useMaterial3: true, extensions: [TextThemeExtension.textStyles()]),
       routerConfig: AppRouterConfig.instance.appRouter,
     );
   }

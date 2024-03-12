@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:feelify/core/extensions/context_extension.dart';
 import 'package:feelify/features/company/presentation/widgets/employee_image_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -20,11 +21,16 @@ class Frame extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border.all(color: _getRandomColor(), width: 2),
           borderRadius: BorderRadius.circular(12)),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Company name (count)", softWrap: true),
-          Wrap(
+          Text(
+            "Company name (4)",
+            style: context.textStyle.companyNameText,
+            softWrap: true,
+          ),
+          const SizedBox(height: 8),
+          const Wrap(
             alignment: WrapAlignment.start,
             runAlignment: WrapAlignment.start,
             spacing: 12,
