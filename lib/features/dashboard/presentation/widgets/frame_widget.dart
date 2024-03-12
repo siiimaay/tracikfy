@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:feelify/features/company/presentation/widgets/employee_image_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -16,19 +18,36 @@ class Frame extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.amber, width: 2),
+          border: Border.all(color: _getRandomColor(), width: 2),
           borderRadius: BorderRadius.circular(12)),
-      child: const Wrap(
-        alignment: WrapAlignment.center,
-        spacing: 12,
-        runSpacing: 15,
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          EmployeeImageWidget(),
-          EmployeeImageWidget(),
-          EmployeeImageWidget(),
-          EmployeeImageWidget(),
+          Text("Company name (count)", softWrap: true),
+          Wrap(
+            alignment: WrapAlignment.start,
+            runAlignment: WrapAlignment.start,
+            spacing: 12,
+            runSpacing: 15,
+            children: [
+              EmployeeImageWidget(),
+              EmployeeImageWidget(),
+              EmployeeImageWidget(),
+              EmployeeImageWidget(),
+            ],
+          ),
         ],
       ),
     );
   }
+}
+
+Color _getRandomColor() {
+  Random random = Random();
+  return Color.fromRGBO(
+    random.nextInt(256),
+    random.nextInt(256),
+    random.nextInt(256),
+    1,
+  );
 }

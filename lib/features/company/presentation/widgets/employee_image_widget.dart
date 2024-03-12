@@ -8,8 +8,8 @@ class EmployeeImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 24,
-      width: 24,
+      height: 28,
+      width: 28,
       child: CircleAvatar(
         radius: 50,
         backgroundImage: AssetImage(Assets.images.userAvatar.path),
