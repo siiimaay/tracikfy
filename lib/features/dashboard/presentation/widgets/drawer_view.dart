@@ -44,7 +44,7 @@ class DrawerView extends StatelessWidget {
                           context.read<DashboardCubit>().updateSelection(0);
 
                           context.go(DashboardView.route);
-                          drawerKey.currentState?.closeDrawer();
+                          // drawerKey.currentState?.closeDrawer();
                         },
                         prefix: const Icon(Icons.dashboard_outlined),
                       ),
@@ -54,7 +54,7 @@ class DrawerView extends StatelessWidget {
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(1);
                           context.go(CandidateView.route);
-                          drawerKey.currentState?.closeDrawer();
+                         // drawerKey.currentState?.closeDrawer();
 
                         },
                         prefix: const Icon(Icons.people_outline),

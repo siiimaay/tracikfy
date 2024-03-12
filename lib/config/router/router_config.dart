@@ -22,21 +22,27 @@ class AppRouterConfig {
             path: DashboardView.route,
             builder: (BuildContext context, GoRouterState state) =>
                 DashboardView()),
-        ShellRoute(
+        StatefulShellRoute.indexedStack(
           builder: (BuildContext context, GoRouterState state, Widget child) {
             return DashboardView(child: child);
           },
-          routes: [
-            GoRoute(
-              path: CandidateView.route,
-              builder: (BuildContext context, GoRouterState state) =>
-                  const CandidateView(),
-            ),
-            GoRoute(
-              path: CompanyView.route,
-              builder: (BuildContext context, GoRouterState state) =>
-                  const CompanyView(),
-            ),
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: CandidateView.route,
+                  builder: (context, state) {
+                    return const CandidateView();
+                  },
+                ),
+                GoRoute(
+                  path: CompanyView.route,
+                  builder: (context, state) {
+                    return const CompanyView();
+                  },
+                ),
+              ],
+            )
           ],
         )
       ]);

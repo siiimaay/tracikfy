@@ -14,15 +14,19 @@ class Frame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
-      width: 300,
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.amber, width: 2),
           borderRadius: BorderRadius.circular(12)),
-      child: Wrap(
+      child: const Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 12,
+        runSpacing: 15,
         children: [
           EmployeeImageWidget(),
-
+          EmployeeImageWidget(),
+          EmployeeImageWidget(),
+          EmployeeImageWidget(),
         ],
       ),
     );
