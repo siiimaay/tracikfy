@@ -1,5 +1,5 @@
-import 'package:feelify/config/router/router_config.dart';
-import 'package:feelify/theme/text_theme_extension.dart';
+import 'package:trackify/config/router/router_config.dart';
+import 'package:trackify/theme/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -1,4 +1,4 @@
-# feelify
+# trackify
 
 A new Flutter project.
 

@@ -1,6 +1,6 @@
-import 'package:feelify/features/candidate/presentation/candidate_view.dart';
-import 'package:feelify/features/company/presentation/company_view.dart';
-import 'package:feelify/features/dashboard/presentation/dashboard_view.dart';
+import 'package:trackify/features/candidate/presentation/candidate_view.dart';
+import 'package:trackify/features/company/presentation/company_view.dart';
+import 'package:trackify/features/dashboard/presentation/dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

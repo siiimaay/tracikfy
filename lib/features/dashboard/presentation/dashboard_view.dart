@@ -1,5 +1,5 @@
-import 'package:feelify/features/dashboard/presentation/dashboard_cubit.dart';
-import 'package:feelify/features/dashboard/presentation/widgets/drawer_view.dart';
+import 'package:trackify/features/dashboard/presentation/dashboard_cubit.dart';
+import 'package:trackify/features/dashboard/presentation/widgets/drawer_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

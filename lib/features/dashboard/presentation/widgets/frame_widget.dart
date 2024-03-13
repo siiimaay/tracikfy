@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:feelify/core/extensions/context_extension.dart';
-import 'package:feelify/features/company/presentation/widgets/employee_image_widget.dart';
+import 'package:trackify/core/extensions/context_extension.dart';
+import 'package:trackify/features/company/presentation/widgets/employee_image_widget.dart';
 import 'package:flutter/material.dart';
 
 class Frame extends StatelessWidget {

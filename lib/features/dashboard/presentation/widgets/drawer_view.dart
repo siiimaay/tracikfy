@@ -1,9 +1,9 @@
-import 'package:feelify/features/candidate/presentation/candidate_view.dart';
-import 'package:feelify/features/company/presentation/company_view.dart';
-import 'package:feelify/features/dashboard/presentation/dashboard_cubit.dart';
-import 'package:feelify/features/dashboard/presentation/dashboard_view.dart';
-import 'package:feelify/features/dashboard/presentation/widgets/tab.dart';
-import 'package:feelify/features/data/dashboard_section.dart';
+import 'package:trackify/features/candidate/presentation/candidate_view.dart';
+import 'package:trackify/features/company/presentation/company_view.dart';
+import 'package:trackify/features/dashboard/presentation/dashboard_cubit.dart';
+import 'package:trackify/features/dashboard/presentation/dashboard_view.dart';
+import 'package:trackify/features/dashboard/presentation/widgets/tab.dart';
+import 'package:trackify/features/data/dashboard_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
