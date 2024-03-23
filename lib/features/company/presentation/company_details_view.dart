@@ -15,31 +15,39 @@ class CompanyDetailView extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Company Details"),
       ),
-      body:  const Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
+          const Center(
               child: CircleAvatar(
             maxRadius: 75,
             backgroundColor: Colors.grey,
           )),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           CompanyDetailSection(sectionName: "Company Details", settingsItems: [
             DetailItem(
               text: "Company name",
               valueText: "Value",
-              prefixIcon: Icon(Icons.account_balance_rounded),
+              prefixIcon: Icon(
+                Icons.account_balance_outlined,
+                color: const Color(0xff09093b).withOpacity(0.7),
+              ),
             ),
             DetailItem(
                 text: "Work Area",
                 valueText: "Value",
-                prefixIcon: Icon(Icons.work_history_outlined)),
+                prefixIcon: Icon(
+                  Icons.work_history_outlined,
+                  color: const Color(0xff09093b).withOpacity(0.7),
+                )),
             DetailItem(
                 text: "Contact information",
                 valueText: "Value",
-                prefixIcon: Icon(Icons.contact_mail_outlined)),
+                prefixIcon: Icon(
+                  Icons.contact_mail_outlined,
+                  color: const Color(0xff09093b).withOpacity(0.7),
+                )),
           ]),
-
         ],
       ),
     );
