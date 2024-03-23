@@ -54,8 +54,6 @@ class DrawerView extends StatelessWidget {
                         onTap: () {
                           context.read<DashboardCubit>().updateSelection(1);
                           context.go(CandidateView.route);
-                         // drawerKey.currentState?.closeDrawer();
-
                         },
                         prefix: const Icon(Icons.people_outline),
                       ),
