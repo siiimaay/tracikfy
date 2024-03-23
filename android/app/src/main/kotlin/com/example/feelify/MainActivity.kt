@@ -1,4 +1,4 @@
-package com.example.feelify
+package com.example.trackify
 
 import io.flutter.embedding.android.FlutterActivity
 

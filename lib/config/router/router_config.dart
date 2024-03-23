@@ -1,8 +1,10 @@
-import 'package:feelify/features/candidate/presentation/candidate_view.dart';
-import 'package:feelify/features/company/company_view.dart';
-import 'package:feelify/features/dashboard/presentation/dashboard_view.dart';
+import 'package:trackify/features/candidate/presentation/candidate_view.dart';
+import 'package:trackify/features/company/presentation/company_view.dart';
+import 'package:trackify/features/dashboard/presentation/dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../features/company/presentation/company_details_view.dart';
 
 class AppRouterConfig {
   static final _instance = AppRouterConfig._internal();
@@ -22,21 +24,33 @@ class AppRouterConfig {
             path: DashboardView.route,
             builder: (BuildContext context, GoRouterState state) =>
                 DashboardView()),
-        ShellRoute(
+        StatefulShellRoute.indexedStack(
           builder: (BuildContext context, GoRouterState state, Widget child) {
             return DashboardView(child: child);
           },
-          routes: [
-            GoRoute(
-              path: CandidateView.route,
-              builder: (BuildContext context, GoRouterState state) =>
-                  const CandidateView(),
-            ),
-            GoRoute(
-              path: CompanyView.route,
-              builder: (BuildContext context, GoRouterState state) =>
-                  const CompanyView(),
-            ),
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: CandidateView.route,
+                  builder: (context, state) {
+                    return const CandidateView();
+                  },
+                ),
+                GoRoute(
+                    path: CompanyDetailView.route,
+                    builder: (context, state) {
+                      return const CompanyDetailView();
+                    }),
+                GoRoute(
+                  path: CompanyView.route,
+
+                  builder: (context, state) {
+                    return const CompanyView();
+                  },
+                ),
+              ],
+            )
           ],
         )
       ]);
