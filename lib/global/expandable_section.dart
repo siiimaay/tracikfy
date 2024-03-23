@@ -1,8 +1,11 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 
+
 class ExpandableSection extends StatelessWidget {
-  const ExpandableSection({super.key});
+  final String sectionName;
+
+  const ExpandableSection({super.key, required this.sectionName});
 
   @override
   Widget build(BuildContext context) {
@@ -15,25 +18,16 @@ class ExpandableSection extends StatelessWidget {
             headerAlignment: ExpandablePanelHeaderAlignment.center,
             tapBodyToCollapse: true,
           ),
-          header: const Padding(
-              padding: EdgeInsets.all(10), child: Text("ExpandablePanel")),
-          collapsed: const Text(
-            "loremIpsum",
-            softWrap: true,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          expanded: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          header: Padding(
+              padding: const EdgeInsets.all(10), child: Text(sectionName)),
+          collapsed: const SizedBox.shrink(),
+          expanded: Wrap(
+            alignment: WrapAlignment.start,
+            runAlignment: WrapAlignment.start,
+            spacing: 24,
+            runSpacing: 40,
             children: <Widget>[
-              for (var _ in Iterable.generate(5))
-                const Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      "loremIpsum",
-                      softWrap: true,
-                      overflow: TextOverflow.fade,
-                    )),
+              for (var _ in Iterable.generate(18)) const Text("Employee info")
             ],
           ),
           builder: (_, collapsed, expanded) {

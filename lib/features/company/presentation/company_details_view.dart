@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
 import 'package:trackify/features/company/presentation/widgets/company_detail_section.dart';
 import 'package:trackify/features/company/presentation/widgets/detail_item.dart';
+import 'package:trackify/global/expandable_section.dart';
 
 class CompanyDetailView extends StatelessWidget {
   static const route = "/company_detail_view";
@@ -48,6 +49,7 @@ class CompanyDetailView extends StatelessWidget {
                   color: const Color(0xff09093b).withOpacity(0.7),
                 )),
           ]),
+          Expanded(child: const ExpandableSection(sectionName: "Employees"))
         ],
       ),
     );
