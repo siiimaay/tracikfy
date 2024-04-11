@@ -14,54 +14,61 @@ class ColorThemeExtension extends ThemeExtension<ColorThemeExtension> {
   final Color settingsItemShadow;
   final Color textFieldBackColor;
   final Color retryColor;
+  final Color appThemeMainColor;
 
-  const ColorThemeExtension(
-      {required this.settingsBackColor,
-      required this.toolTipBehaviorColor,
-      required this.closeButtonColor,
-      required this.closeButtonIconColor,
-      required this.settingsItemColor,
-      required this.settingsItemBorderColor,
-      required this.successColor,
-      required this.logoutTextColor,
-      required this.accountInfoColor,
-      required this.settingsItemShadow,
-      required this.textFieldBackColor,
-      required this.retryColor});
+  const ColorThemeExtension({
+    required this.settingsBackColor,
+    required this.toolTipBehaviorColor,
+    required this.closeButtonColor,
+    required this.closeButtonIconColor,
+    required this.settingsItemColor,
+    required this.settingsItemBorderColor,
+    required this.successColor,
+    required this.logoutTextColor,
+    required this.accountInfoColor,
+    required this.settingsItemShadow,
+    required this.textFieldBackColor,
+    required this.retryColor,
+    required this.appThemeMainColor,
+  });
 
   @override
   ThemeExtension<ColorThemeExtension> copyWith() {
     return ColorThemeExtension(
-        settingsBackColor: settingsBackColor,
-        accountInfoColor: accountInfoColor,
-        retryColor: retryColor,
-        settingsItemColor: settingsItemColor,
-        settingsItemBorderColor: settingsItemBorderColor,
-        toolTipBehaviorColor: toolTipBehaviorColor,
-        closeButtonColor: closeButtonColor,
-        closeButtonIconColor: closeButtonIconColor,
-        successColor: successColor,
-        logoutTextColor: logoutTextColor,
-        settingsItemShadow: settingsItemShadow,
-        textFieldBackColor: textFieldBackColor);
+      settingsBackColor: settingsBackColor,
+      accountInfoColor: accountInfoColor,
+      retryColor: retryColor,
+      settingsItemColor: settingsItemColor,
+      settingsItemBorderColor: settingsItemBorderColor,
+      toolTipBehaviorColor: toolTipBehaviorColor,
+      closeButtonColor: closeButtonColor,
+      closeButtonIconColor: closeButtonIconColor,
+      successColor: successColor,
+      logoutTextColor: logoutTextColor,
+      settingsItemShadow: settingsItemShadow,
+      textFieldBackColor: textFieldBackColor,
+      appThemeMainColor: appThemeMainColor,
+    );
   }
 
   @override
   ThemeExtension<ColorThemeExtension> lerp(
       covariant ThemeExtension<ColorThemeExtension>? other, double t) {
     return ColorThemeExtension(
-        retryColor: retryColor,
-        settingsItemBorderColor: settingsItemBorderColor,
-        accountInfoColor: accountInfoColor,
-        settingsBackColor: settingsBackColor,
-        settingsItemColor: settingsItemColor,
-        toolTipBehaviorColor: toolTipBehaviorColor,
-        closeButtonColor: closeButtonColor,
-        closeButtonIconColor: closeButtonIconColor,
-        successColor: successColor,
-        logoutTextColor: logoutTextColor,
-        settingsItemShadow: settingsItemShadow,
-        textFieldBackColor: textFieldBackColor);
+      retryColor: retryColor,
+      settingsItemBorderColor: settingsItemBorderColor,
+      accountInfoColor: accountInfoColor,
+      settingsBackColor: settingsBackColor,
+      settingsItemColor: settingsItemColor,
+      toolTipBehaviorColor: toolTipBehaviorColor,
+      closeButtonColor: closeButtonColor,
+      closeButtonIconColor: closeButtonIconColor,
+      successColor: successColor,
+      logoutTextColor: logoutTextColor,
+      settingsItemShadow: settingsItemShadow,
+      textFieldBackColor: textFieldBackColor,
+      appThemeMainColor: appThemeMainColor,
+    );
   }
 
   static Color fromHex(String hexString) {
@@ -83,7 +90,8 @@ class ColorThemeExtension extends ThemeExtension<ColorThemeExtension> {
       closeButtonIconColor: Color(0xff7787F3),
       successColor: Color(0xff63BB37),
       settingsItemShadow: Color(0x00c7c7c7),
-      textFieldBackColor: Colors.white);
+      textFieldBackColor: Colors.white,
+      appThemeMainColor: Color(0xff09093b));
 
   static const dark = ColorThemeExtension(
     settingsItemBorderColor: Color(0xff444348),
@@ -98,5 +106,6 @@ class ColorThemeExtension extends ThemeExtension<ColorThemeExtension> {
     settingsItemShadow: Color(0xff343434),
     textFieldBackColor: Color(0xff121212),
     accountInfoColor: Color(0xff121212),
+    appThemeMainColor: Color(0xff09093b),
   );
 }

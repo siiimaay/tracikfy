@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 
 class Frame extends StatelessWidget {
   final Color? color;
-  final String label;
+  final String? label;
   final Function()? onTap;
 
   const Frame({
     Key? key,
     this.color,
     this.onTap,
-    required this.label,
+     this.label,
   }) : super(key: key);
 
   @override

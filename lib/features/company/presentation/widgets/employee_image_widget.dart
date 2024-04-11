@@ -9,18 +9,24 @@ class EmployeeInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 28,
-          width: 28,
-          child: CircleAvatar(
-            radius: 50,
-            backgroundImage: AssetImage(Assets.images.userAvatar.path),
+    return InkWell(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            fit: FlexFit.loose,
+            child: SizedBox(
+              height: 28,
+              width: 28,
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: AssetImage(Assets.images.userAvatar.path),
+              ),
+            ),
           ),
-        ),
-        if (name != null) Text(name!),
-      ],
+          if (name != null) Flexible(fit:FlexFit.loose,child: Text(name!)),
+        ],
+      ),
     );
   }
 }

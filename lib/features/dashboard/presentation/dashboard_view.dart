@@ -1,3 +1,4 @@
+import 'package:trackify/core/extensions/context_extension.dart';
 import 'package:trackify/features/dashboard/presentation/dashboard_cubit.dart';
 import 'package:trackify/features/dashboard/presentation/widgets/drawer_view.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,8 @@ class DashboardView extends StatelessWidget {
       create: (context) => DashboardCubit(),
       child: Scaffold(
           key: _scaffoldKey,
-          appBar: AppBar(),
+          backgroundColor: context.color.settingsBackColor,
+          appBar: AppBar(shadowColor: context.color.settingsBackColor,),
           drawer: DrawerView(drawerKey: _scaffoldKey),
           body: child),
     );
