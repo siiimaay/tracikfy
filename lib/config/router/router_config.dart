@@ -1,4 +1,5 @@
-import 'package:trackify/features/candidate/presentation/candidate_view.dart';
+import 'package:trackify/features/candidate/employee_view.dart';
+import 'package:trackify/features/candidate/widgets/employee_detail_widget.dart';
 import 'package:trackify/features/company/presentation/company_view.dart';
 import 'package:trackify/features/company/presentation/new_company_view.dart';
 import 'package:trackify/features/dashboard/presentation/dashboard_view.dart';
@@ -34,25 +35,34 @@ class AppRouterConfig {
               routes: [
                 GoRoute(
                   path: CandidateView.route,
+                  routes: [
+                    GoRoute(
+                        path: EmployeeDetailView.route,
+                        builder: (context, state) {
+                          return const EmployeeDetailView();
+                        }),
+                  ],
                   builder: (context, state) {
                     return const CandidateView();
                   },
                 ),
                 GoRoute(
-                    path: CompanyDetailView.route,
-                    builder: (context, state) {
-                      return const CompanyDetailView();
-                    }),
-                GoRoute(
                   path: CompanyView.route,
+                  routes: [
+                    GoRoute(
+                        path: CompanyDetailView.route,
+                        builder: (context, state) {
+                          return const CompanyDetailView();
+                        }),
+                    GoRoute(
+                      path: NewCompanyDetailForm.route,
+                      builder: (context, state) {
+                        return const NewCompanyDetailForm();
+                      },
+                    ),
+                  ],
                   builder: (context, state) {
                     return const CompanyView();
-                  },
-                ),
-                GoRoute(
-                  path: NewCompanyDetailForm.route,
-                  builder: (context, state) {
-                    return const NewCompanyDetailForm();
                   },
                 ),
               ],

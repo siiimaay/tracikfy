@@ -72,16 +72,15 @@ class _CandidateViewState extends State<CandidateView>
             ],
           ),
           //Search here
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           Expanded(
-            child: TabBarView(controller: tabController, children:  [
+            child: TabBarView(controller: tabController, children: [
               ListView.builder(
                   itemCount: 10,
-
                   itemBuilder: (context, index) {
                     return const EmployeeDetailCard();
                   }),
-              Center(child: Text("candidate")),
+              const Center(child: Text("candidate")),
             ]),
           )
         ],
