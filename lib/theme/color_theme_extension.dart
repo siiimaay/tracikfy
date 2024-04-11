@@ -32,6 +32,20 @@ class ColorThemeExtension extends ThemeExtension<ColorThemeExtension> {
     required this.appThemeMainColor,
   });
 
+  const ColorThemeExtension(
+      {required this.settingsBackColor,
+      required this.toolTipBehaviorColor,
+      required this.closeButtonColor,
+      required this.closeButtonIconColor,
+      required this.settingsItemColor,
+      required this.settingsItemBorderColor,
+      required this.successColor,
+      required this.logoutTextColor,
+      required this.accountInfoColor,
+      required this.settingsItemShadow,
+      required this.textFieldBackColor,
+      required this.retryColor});
+
   @override
   ThemeExtension<ColorThemeExtension> copyWith() {
     return ColorThemeExtension(
