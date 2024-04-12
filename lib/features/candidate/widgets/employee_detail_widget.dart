@@ -15,7 +15,7 @@ class EmployeeDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: context.color.settingsBackColor,
       appBar: AppBar(
         title: const Text("Employee Details"),
@@ -50,13 +50,24 @@ class EmployeeDetailView extends StatelessWidget {
                           color: const Color(0xff09093b).withOpacity(0.7),
                         ),
                       ),
-                      DetailItem(
-                          text: "Work Area",
-                          valueText: "Value",
-                          prefixIcon: Icon(
-                            Icons.work_history_outlined,
-                            color: const Color(0xff09093b).withOpacity(0.7),
-                          )),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: MultiSelectDropdown(
+                          items: [
+                            "Engineering",
+                            "Product",
+                            "Engineering",
+                            "Product"
+                          ].toList(),
+                          hint: 'Select department',
+                          onSelectedItemsChanged: (_) {},
+                          selectedItems:
+                              const ["Engineering", "Product"].toList(),
+                          itemNameBuilder: (String item) {
+                            return item;
+                          },
+                        ),
+                      ),
                       DetailItem(
                           text: "Contact information",
                           valueText: "Value",
@@ -65,17 +76,6 @@ class EmployeeDetailView extends StatelessWidget {
                             color: const Color(0xff09093b).withOpacity(0.7),
                           )),
                     ]),
-                    Flexible(
-                      child: MultiSelectDropdown(
-                        items: ["Engineering", "Product","Engineering", "Product"].toList(),
-                        hint: 'Select department',
-                        onSelectedItemsChanged: (_) {},
-                        selectedItems: const ["Engineering","Product"].toList(),
-                        itemNameBuilder: (String item) {
-                          return item;
-                        },
-                      ),
-                    )
                   ],
                 ),
               ),
