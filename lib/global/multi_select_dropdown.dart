@@ -69,21 +69,19 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                               spacing: 6.0,
                               children: _selectedItems.isEmpty
                                   ? [
-                                       Text(
-                                        "Please select the department",
-                                        style: TextStyle(
-                                            color: context.color.accountInfoColor),
-                                      ),
+                                      Text("Department",
+                                          style: context.textStyle.detailText
+                                              .copyWith(
+                                            color:
+                                                context.color.accountInfoColor,
+                                          )),
                                     ]
                                   : _selectedItems.map((item) {
                                       return Chip(
                                         label: Text(
                                           widget.itemNameBuilder(item),
-                                          style: TextStyle(
-                                            color: context
-                                                .color.appThemeMainColor
-                                                .withOpacity(0.7),
-                                          ),
+                                          style: const TextStyle(
+                                              color: Colors.white),
                                         ),
                                         deleteIcon: const Icon(
                                           Icons.cancel,
@@ -96,8 +94,11 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                                                 _selectedItems);
                                           });
                                         },
-                                        surfaceTintColor:
+                                        backgroundColor:
                                             context.color.appThemeMainColor,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
                                       );
                                     }).toList(),
                             ),
@@ -114,8 +115,12 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                   const SizedBox(height: 8),
                   if (_isExpanded)
                     Container(
-                      constraints:
-                          const BoxConstraints(maxWidth: 400, minWidth: 400, minHeight: 60, maxHeight: 120),
+                      constraints: const BoxConstraints(
+                        maxWidth: 400,
+                        minWidth: 400,
+                        minHeight: 60,
+                        maxHeight: 120,
+                      ),
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
@@ -143,7 +148,6 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                                 }
                                 widget.onSelectedItemsChanged(_selectedItems);
                                 _isExpanded = false;
-
                               });
                             },
                           );
