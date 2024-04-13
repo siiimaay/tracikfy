@@ -3,10 +3,11 @@ import 'package:trackify/core/extensions/context_extension.dart';
 import 'package:trackify/features/company/presentation/widgets/company_detail_section.dart';
 import 'package:trackify/features/company/presentation/widgets/detail_item.dart';
 
+import '../../../global/multi_select_dropdown.dart';
 import '../../../global/submit_button.dart';
 
 class NewCompanyDetailForm extends StatelessWidget {
-  static const route = "/new_company_view";
+  static const route = "new_company_view";
 
   const NewCompanyDetailForm({super.key});
 
@@ -60,6 +61,7 @@ class NewCompanyDetailForm extends StatelessWidget {
                                 color: const Color(0xff09093b).withOpacity(0.7),
                               )),
                         ]),
+
                   ],
                 ),
               ),

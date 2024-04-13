@@ -5,7 +5,7 @@ import 'detail_item.dart';
 
 class CompanyDetailSection extends StatelessWidget {
   final String sectionName;
-  final List<DetailItem> settingsItems;
+  final List<Widget> settingsItems;
 
   const CompanyDetailSection({
     Key? key,
@@ -16,6 +16,7 @@ class CompanyDetailSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (sectionName.isNotEmpty)

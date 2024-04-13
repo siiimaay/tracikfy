@@ -43,7 +43,7 @@ class _DetailItemState extends State<DetailItem> {
         decoration: BoxDecoration(
           color: context.color.settingsItemColor,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color(0xff09093b), width: 2),
+          border: Border.all(color: const Color(0xff09093b), width: 1.6),
           boxShadow: [
             BoxShadow(
               offset: const Offset(0, -5),

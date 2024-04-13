@@ -33,25 +33,26 @@ class CompanyView extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 16),
             child: Align(
               alignment: Alignment.bottomRight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FloatingActionButton(
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: context.color.appThemeMainColor,
                     foregroundColor: Colors.white,
-                      elevation: 8,
-
-                      backgroundColor: context.color.appThemeMainColor,
-                      onPressed: () {
-                        context.push(NewCompanyDetailForm.route);
-                      },
-                      child: const Icon(
+                    elevation: 8,
+                  ),
+                  onPressed: () {
+                    context.push("${CompanyView.route}/${NewCompanyDetailForm.route}");
+                  },
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
                         Icons.add,
-                        size: 36,
-                      )),
-                  //const SizedBox(width: 8),
-              //    FloatingActionButton(onPressed: () {}),
-                ],
-              ),
+                        size: 24,
+                      ),
+                      SizedBox(width: 6),
+                      Text("Company")
+                    ],
+                  )),
             ),
           )
         ],

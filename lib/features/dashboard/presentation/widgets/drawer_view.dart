@@ -1,4 +1,4 @@
-import 'package:trackify/features/candidate/presentation/candidate_view.dart';
+import 'package:trackify/features/candidate/employee_view.dart';
 import 'package:trackify/features/company/presentation/company_view.dart';
 import 'package:trackify/features/dashboard/presentation/dashboard_cubit.dart';
 import 'package:trackify/features/dashboard/presentation/dashboard_view.dart';

@@ -7,7 +7,7 @@ import 'package:trackify/global/expandable_section.dart';
 import '../../../global/submit_button.dart';
 
 class CompanyDetailView extends StatelessWidget {
-  static const route = "/company_detail_view";
+  static const route = "company_detail_view";
 
   const CompanyDetailView({super.key});
 
