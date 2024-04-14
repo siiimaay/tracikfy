@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:go_router/go_router.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
-import 'package:trackify/features/company/presentation/company_details_view.dart';
+import 'package:trackify/features/company/presentation/widgets/company_details_view.dart';
 import 'package:trackify/features/company/presentation/company_view.dart';
 import 'package:trackify/features/company/presentation/widgets/employee_image_widget.dart';
 import 'package:flutter/material.dart';

@@ -1,12 +1,12 @@
 import 'package:trackify/features/candidate/employee_view.dart';
 import 'package:trackify/features/candidate/widgets/employee_detail_widget.dart';
 import 'package:trackify/features/company/presentation/company_view.dart';
-import 'package:trackify/features/company/presentation/new_company_view.dart';
+import 'package:trackify/features/company/presentation/widgets/new_company_view.dart';
 import 'package:trackify/features/dashboard/presentation/dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/company/presentation/company_details_view.dart';
+import '../../features/company/presentation/widgets/company_details_view.dart';
 
 class AppRouterConfig {
   static final _instance = AppRouterConfig._internal();

@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
-import 'package:trackify/features/company/presentation/new_company_view.dart';
+import 'package:trackify/features/company/presentation/widgets/new_company_view.dart';
 import 'package:trackify/features/dashboard/presentation/widgets/frame_widget.dart';
 import 'package:flutter/material.dart';
 
