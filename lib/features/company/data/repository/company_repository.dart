@@ -1,6 +1,7 @@
 
 import '../../../../core/injection/locator.dart';
 import '../../domain/company_storage_service.dart';
+import '../company.dart';
 
 class CompanyRepository {
   static CompanyRepository? _instance;
@@ -14,7 +15,7 @@ class CompanyRepository {
     return _instance ??= CompanyRepository._();
   }
 
-  Future<Future<List>> fetchCompanies() async {
+  Future<List<Company>> fetchCompanies() async {
     return _companyStorageService.fetchRecords();
   }
 
