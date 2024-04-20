@@ -1,3 +1,4 @@
+import 'package:trackify/features/auth/presentation/login_view.dart';
 import 'package:trackify/features/candidate/employee_view.dart';
 import 'package:trackify/features/candidate/widgets/employee_detail_widget.dart';
 import 'package:trackify/features/company/presentation/company_view.dart';
@@ -20,12 +21,18 @@ class AppRouterConfig {
 
   final appRouter = GoRouter(
       navigatorKey: GlobalKey<NavigatorState>(),
-      initialLocation: DashboardView.route,
+      initialLocation: "/login",
       routes: [
         GoRoute(
-            path: DashboardView.route,
-            builder: (BuildContext context, GoRouterState state) =>
-                DashboardView()),
+          path: DashboardView.route,
+          builder: (BuildContext context, GoRouterState state) =>
+              DashboardView(),
+        ),
+        GoRoute(
+          path: "/login",
+          builder: (BuildContext context, GoRouterState state) =>
+              const LoginView(),
+        ),
         StatefulShellRoute.indexedStack(
           builder: (BuildContext context, GoRouterState state, Widget child) {
             return DashboardView(child: child);
