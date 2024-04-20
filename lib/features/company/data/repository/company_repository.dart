@@ -2,13 +2,15 @@
 import '../../../../core/injection/locator.dart';
 import '../../domain/company_storage_service.dart';
 import '../company.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable()
 class CompanyRepository {
   static CompanyRepository? _instance;
   late final CompanyStorageService _companyStorageService;
 
   CompanyRepository._() {
-    _companyStorageService = getIt<CompanyStorageService>();
+    _companyStorageService = getIt.get<CompanyStorageService>();
   }
 
   factory CompanyRepository() {

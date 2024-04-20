@@ -9,6 +9,7 @@ import 'common_widgets/form_field_label.dart';
 import 'common_widgets/text_field.dart';
 
 class LoginView extends StatefulWidget {
+  static const route = "/login";
   const LoginView({Key? key}) : super(key: key);
 
   @override

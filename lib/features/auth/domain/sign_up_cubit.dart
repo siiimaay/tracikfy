@@ -1,14 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trackify/core/service/auth_service.dart';
 
 import '../../../core/injection/locator.dart';
 import 'login_service.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class SignUpCubit extends Cubit<SignUpState> {
-  late final LoginService _loginService;
+   final IAuthService _loginService ;
 
-  SignUpCubit() : super(SignUpState(InitialEvent())) {
-    _loginService = getIt<LoginService>();
-  }
+  SignUpCubit(this._loginService) : super(SignUpState(InitialEvent()));
 
   void createAccount(
     String email,

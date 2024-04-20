@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:trackify/features/auth/presentation/login_view.dart';
 import 'package:trackify/features/candidate/employee_view.dart';
 import 'package:trackify/features/candidate/widgets/employee_detail_widget.dart';
@@ -7,6 +8,7 @@ import 'package:trackify/features/dashboard/presentation/dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/sign_up_view.dart';
 import '../../features/company/presentation/widgets/company_details_view.dart';
 
 class AppRouterConfig {
@@ -21,7 +23,16 @@ class AppRouterConfig {
 
   final appRouter = GoRouter(
       navigatorKey: GlobalKey<NavigatorState>(),
-      initialLocation: "/login",
+      initialLocation: SignUpView.route,
+     /* redirect: (BuildContext context, GoRouterState state) {
+        final hasUserLoggedIn = FirebaseAuth.instance.currentUser?.uid != null;
+
+        if (hasUserLoggedIn) {
+          return DashboardView.route;
+        } else {
+          return null;
+        }
+      },*/
       routes: [
         GoRoute(
           path: DashboardView.route,
@@ -29,9 +40,14 @@ class AppRouterConfig {
               DashboardView(),
         ),
         GoRoute(
-          path: "/login",
+          path: LoginView.route,
           builder: (BuildContext context, GoRouterState state) =>
               const LoginView(),
+        ),
+        GoRoute(
+          path: SignUpView.route,
+          builder: (BuildContext context, GoRouterState state) =>
+              const SignUpView(),
         ),
         StatefulShellRoute.indexedStack(
           builder: (BuildContext context, GoRouterState state, Widget child) {

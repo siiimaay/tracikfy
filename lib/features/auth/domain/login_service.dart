@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:trackify/features/auth/data/user.dart' as account;
+import 'package:injectable/injectable.dart';
 
 import '../../../core/service/auth_service.dart';
 
+@Injectable(as: IAuthService)
 class LoginService implements IAuthService {
   static LoginService? _instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;

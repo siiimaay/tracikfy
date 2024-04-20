@@ -7,7 +7,7 @@ class LoginCubit extends Cubit<LoginState> {
   late final LoginService _loginService;
 
   LoginCubit() : super(LoginState(InitialEvent())) {
-  //  _loginService = getIt<LoginService>();
+   _loginService = getIt.get<LoginService>();
   }
 
   Future<void> login(

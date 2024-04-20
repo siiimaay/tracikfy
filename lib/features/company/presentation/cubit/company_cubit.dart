@@ -8,7 +8,7 @@ class CompanyCubit extends Cubit<CompanyState> {
   CompanyCubit() : super(CompanyState(companies: []));
 
   void fetchCompanies() async {
-    final companies = await getIt<CompanyRepository>().fetchCompanies();
+    final companies = await getIt.get<CompanyRepository>().fetchCompanies();
     emit(state.copyWith(companies: companies));
   }
 }

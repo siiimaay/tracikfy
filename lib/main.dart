@@ -3,7 +3,14 @@ import 'package:trackify/theme/color_theme_extension.dart';
 import 'package:trackify/theme/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'core/injection/locator.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  setupInjection();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
