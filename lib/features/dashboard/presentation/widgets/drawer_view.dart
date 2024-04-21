@@ -17,63 +17,65 @@ class DrawerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DashboardCubit, DashboardState>(
-      builder: (context, state) {
-        return Container(
-          width: 300,
-          color: const Color(0xff09093b),
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Logo(),
-                const Divider(
-                  color: Colors.white,
-                  thickness: 0.8,
-                  indent: 16,
-                  endIndent: 16,
-                ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: ListView(
-                    children: [
-                      TabView(
-                        isSelected: state.currentIndex == 0,
-                        text: DashboardSection.dashboard.name,
-                        onTap: () {
-                          context.read<DashboardCubit>().updateSelection(0);
-
-                          context.go(DashboardView.route);
-                          // drawerKey.currentState?.closeDrawer();
-                        },
-                        prefix: const Icon(Icons.dashboard_outlined),
-                      ),
-                      TabView(
-                        isSelected: state.currentIndex == 1,
-                        text: DashboardSection.candidate.name,
-                        onTap: () {
-                          context.read<DashboardCubit>().updateSelection(1);
-                          context.go(CandidateView.route);
-                        },
-                        prefix: const Icon(Icons.people_outline),
-                      ),
-                      TabView(
-                        isSelected: state.currentIndex == 2,
-                        text: DashboardSection.companies.name,
-                        onTap: () {
-                          context.read<DashboardCubit>().updateSelection(2);
-                          context.go(CompanyView.route);
-                        },
-                        prefix: const Icon(Icons.business),
-                      )
-                    ],
+    return BlocProvider<DashboardCubit>(
+      create: (context) => DashboardCubit(),
+      child: BlocBuilder<DashboardCubit, DashboardState>(
+        builder: (context, state) {
+          return Container(
+            width: 300,
+            color: const Color(0xff09093b),
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Logo(),
+                  const Divider(
+                    color: Colors.white,
+                    thickness: 0.8,
+                    indent: 16,
+                    endIndent: 16,
                   ),
-                )
-              ],
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        TabView(
+                          isSelected: state.currentIndex == 0,
+                          text: DashboardSection.dashboard.name,
+                          onTap: () {
+                            context.read<DashboardCubit>().updateSelection(0);
+                            context.go(DashboardView.route);
+                            // drawerKey.currentState?.closeDrawer();
+                          },
+                          prefix: const Icon(Icons.dashboard_outlined),
+                        ),
+                        TabView(
+                          isSelected: state.currentIndex == 1,
+                          text: DashboardSection.candidate.name,
+                          onTap: () {
+                            context.read<DashboardCubit>().updateSelection(1);
+                            context.go(CandidateView.route);
+                          },
+                          prefix: const Icon(Icons.people_outline),
+                        ),
+                        TabView(
+                          isSelected: state.currentIndex == 2,
+                          text: DashboardSection.companies.name,
+                          onTap: () {
+                            context.read<DashboardCubit>().updateSelection(2);
+                            context.go(CompanyView.route);
+                          },
+                          prefix: const Icon(Icons.business),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
