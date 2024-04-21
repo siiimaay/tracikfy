@@ -24,7 +24,7 @@ class AppRouterConfig {
   final appRouter = GoRouter(
       navigatorKey: GlobalKey<NavigatorState>(),
       initialLocation: SignUpView.route,
-     /* redirect: (BuildContext context, GoRouterState state) {
+      redirect: (BuildContext context, GoRouterState state) {
         final hasUserLoggedIn = FirebaseAuth.instance.currentUser?.uid != null;
 
         if (hasUserLoggedIn) {
@@ -32,7 +32,7 @@ class AppRouterConfig {
         } else {
           return null;
         }
-      },*/
+      },
       routes: [
         GoRoute(
           path: DashboardView.route,

@@ -4,7 +4,6 @@ import 'package:trackify/features/auth/data/user.dart' as account;
 import 'package:injectable/injectable.dart';
 
 import '../../../core/service/auth_service.dart';
-
 @Injectable(as: IAuthService)
 class LoginService implements IAuthService {
   static LoginService? _instance;
@@ -19,11 +18,11 @@ class LoginService implements IAuthService {
 
   @override
   Future<User?> signUp(
-    String email,
-    String password,
-    String phoneNumber,
-    String country,
-  ) async {
+      String email,
+      String password,
+      String phoneNumber,
+      String country,
+      ) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -58,3 +57,4 @@ class LoginService implements IAuthService {
     );
   }
 }
+

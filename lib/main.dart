@@ -1,4 +1,5 @@
 import 'package:trackify/config/router/router_config.dart';
+import 'package:trackify/firebase_options.dart';
 import 'package:trackify/theme/color_theme_extension.dart';
 import 'package:trackify/theme/text_theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,10 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   setupInjection();
-  await Firebase.initializeApp();
+
 
   runApp(const MyApp());
 }

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:trackify/features/dashboard/presentation/dashboard_view.dart';
 import 'package:trackify/global/submit_button.dart';
 
-
+import '../../../gen/assets.gen.dart';
+import '../../../global/info_snackbar.dart';
 import '../domain/login_cubit.dart';
 import 'common_widgets/form_field_label.dart';
 import 'common_widgets/text_field.dart';
 
 class LoginView extends StatefulWidget {
   static const route = "/login";
+
   const LoginView({Key? key}) : super(key: key);
 
   @override
@@ -46,6 +50,7 @@ class _LoginViewState extends State<LoginView> {
           ])),
         ),
       ),
+      resizeToAvoidBottomInset: true,
       body: BlocProvider<LoginCubit>(
         create: (context) => LoginCubit(),
         child: Container(
@@ -56,46 +61,67 @@ class _LoginViewState extends State<LoginView> {
               listener: (context, state) {
                 final event = state.loginEvent;
                 if (event is SuccessfulLoginEvent) {
-                  Navigator.of(context).pop();
-
+                 context.pop();
+                 context.go(DashboardView.route);
                 } else if (event is FailedLoginEvent) {
-                  Navigator.of(context).pop();
-
+                 context.pop();
+                 TopSnackBarOverlay.showTopSnackbar(
+                   context: context,
+                   message: event.message,
+                   backgroundColor: Colors.red,
+                   icon: Icons.error,
+                 );
                 } else if (event is LoadingEvent) {
                   showDialog(
                     context: context,
                     barrierDismissible: false,
                     builder: (BuildContext context) {
-                      return WillPopScope(
-                        onWillPop: () async => false,
-                        child: Lottie.asset(
-                          'assets/animations/loading_timer.json',
-                        ),
-                      );
+                      return PopScope(
+                          child: Lottie.asset(Assets.animations.loadingTimer));
                     },
                   );
                 }
               },
               builder: (context, state) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                return Stack(
                   children: [
-                    const FormFieldLabel(label: 'Email'),
-                    Flexible(
-                        child: InputTextField(
-                      controller: _emailController,
-                    )),
-                    const FormFieldLabel(label: 'Password'),
-                    Flexible(
-                        flex: 1,
-                        child: InputTextField(
-                          controller: _passwordController,
-                          isObscure: true,
-                        )),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      child: Center(
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding:
+                                  EdgeInsets.only(top: 24, left: 8, bottom: 16),
+                              child: Text(
+                                'Login',
+                                style: TextStyle(
+                                    color: Colors.indigo,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24),
+                              ),
+                            ),
+                            const FormFieldLabel(label: 'Email'),
+                            InputTextField(
+                              controller: _emailController,
+                            ),
+                            const FormFieldLabel(label: 'Password'),
+                            InputTextField(
+                              controller: _passwordController,
+                              isObscure: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom +
+                                16.0),
                         child: SubmitButton(
                           buttonText: "Login",
                           onPressed: () async {
@@ -106,7 +132,7 @@ class _LoginViewState extends State<LoginView> {
                           },
                           textColor: Colors.indigo,
                           buttonSize: const Size(200, 50),
-                          color:  Color(0xFFD1C4E9),
+                          color: const Color(0xFFD1C4E9),
                         ),
                       ),
                     )
