@@ -1,4 +1,3 @@
-
 import '../../../../core/injection/locator.dart';
 import '../../domain/company_storage_service.dart';
 import '../company.dart';
@@ -25,12 +24,9 @@ class CompanyRepository {
     await _companyStorageService.deleteRecord(id: id);
   }
 
-  Future<void> saveCompany(
-      String name, String duration, List<String> laps) async {
-    await _companyStorageService.saveRecord(
-      name: name,
-      duration: duration,
-      laps: laps,
-    );
+  Future<void> saveCompany({
+    required Company company,
+  }) async {
+    await _companyStorageService.saveRecord(data: company);
   }
 }

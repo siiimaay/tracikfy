@@ -1,6 +1,5 @@
-
 abstract class FirestoreService<T> {
-  Future<void> saveRecord();
+  Future<void> saveRecord({required T data});
 
   Future<void> deleteRecord({String? id});
 

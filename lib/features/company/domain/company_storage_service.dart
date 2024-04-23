@@ -1,12 +1,12 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/service/firestore_service.dart';
 import '../data/company.dart';
 
-class CompanyStorageService implements FirestoreService {
-  //final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+class CompanyStorageService implements FirestoreService<Company> {
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final _collection = FirebaseFirestore.instance.collection('company');
 
   @override
@@ -33,9 +33,8 @@ class CompanyStorageService implements FirestoreService {
         stopwatches.add(StopwatchRecord.fromJson(data));
       }*/
 
-      //return stopwatches;
+    //return stopwatches;
     throw UnimplementedError();
-
   }
 
   @override
@@ -44,23 +43,14 @@ class CompanyStorageService implements FirestoreService {
   }
 
   @override
-  Future<void> saveRecord({
-    String? name = 'Default',
-    String? duration = '',
-    List<String>? laps,
-  }) async {
-   /* final id = const Uuid().v4();
-    final stopwatchRecords = StopwatchRecord(
-      id: id,
-      name: name!,
-      duration: duration!,
-      userId: FirebaseAuth.instance.currentUser!.uid,
-      laps: laps ?? [],
+  Future<void> saveRecord({required Company data}) async {
+    final id = const Uuid().v4();
+    final company = Company(
+      company: data.company,
+      workArea: data.workArea,
+      phoneNo: data.phoneNo,
+      userId: id,
     ).toJson();
-    await _firebaseFirestore
-        .collection('stopwatchRecords')
-        .doc(id)
-        .set(stopwatchRecords);*/
+    await _firebaseFirestore.collection('company').doc(id).set(company);
   }
-
 }
