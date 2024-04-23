@@ -24,20 +24,11 @@ class AppRouterConfig {
   final appRouter = GoRouter(
       navigatorKey: GlobalKey<NavigatorState>(),
       initialLocation: SignUpView.route,
-    /* redirect: (BuildContext context, GoRouterState state) {
-        final hasUserLoggedIn = FirebaseAuth.instance.currentUser?.uid != null;
-
-        if (hasUserLoggedIn) {
-          return DashboardView.route;
-        } else {
-          return SignUpView.route;
-        }
-      },*/
       routes: [
         GoRoute(
           path: DashboardView.route,
           builder: (BuildContext context, GoRouterState state) =>
-              DashboardView(),
+              const DashboardView(),
         ),
         GoRoute(
           path: LoginView.route,
@@ -45,6 +36,16 @@ class AppRouterConfig {
               const LoginView(),
         ),
         GoRoute(
+          redirect: (BuildContext context, GoRouterState state) {
+            final hasUserLoggedIn =
+                FirebaseAuth.instance.currentUser?.uid != null;
+
+            if (hasUserLoggedIn) {
+              return DashboardView.route;
+            } else {
+              return null;
+            }
+          },
           path: SignUpView.route,
           builder: (BuildContext context, GoRouterState state) =>
               const SignUpView(),
