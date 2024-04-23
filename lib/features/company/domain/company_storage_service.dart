@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../core/service/firestore_service.dart';
 import '../data/company.dart';
-
+@Injectable(as: FirestoreService)
 class CompanyStorageService implements FirestoreService<Company> {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final _collection = FirebaseFirestore.instance.collection('company');

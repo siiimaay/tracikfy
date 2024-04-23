@@ -13,15 +13,7 @@ class CompanyDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: context.color.settingsBackColor,
-      appBar: AppBar(
-        title: const Text("Company Details"),
-        surfaceTintColor: context.color.settingsBackColor,
-        shadowColor: context.color.settingsBackColor,
-      ),
-      body: Container(
+    return Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
         child: Stack(
             alignment: Alignment.center,
@@ -83,7 +75,7 @@ class CompanyDetailView extends StatelessWidget {
                 ))
           ],
         ),
-      ),
+
     );
   }
 }

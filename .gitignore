@@ -45,5 +45,6 @@ app.*.map.json
 android/app/google-services.json
 /core/injection/locator.config.dart
 *.g.dart
+*.freezed.dart
 lib/firebase_options.dart
 /firebase.json

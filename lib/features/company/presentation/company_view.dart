@@ -1,12 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
-import 'package:trackify/features/company/presentation/cubit/company_cubit.dart';
-import 'package:trackify/features/company/presentation/cubit/company_state.dart';
+
 import 'package:trackify/features/company/presentation/widgets/new_company_view.dart';
 import 'package:trackify/features/dashboard/app_bar_wrapper.dart';
 import 'package:trackify/features/dashboard/presentation/widgets/frame_widget.dart';
 import 'package:flutter/material.dart';
+
+import 'company_cubit/company_cubit.dart';
+import 'company_cubit/company_state.dart';
 
 class CompanyView extends StatelessWidget {
   static const route = "/company_view";

@@ -4,14 +4,14 @@ part 'company.g.dart';
 
 @JsonSerializable()
 class Company {
-  final String userId;
+  final String? userId;
   final String company;
   final String workArea;
   final String phoneNo;
 
   Company({
     required this.company,
-    required this.userId,
+    this.userId,
     required this.workArea,
     required this.phoneNo,
   });

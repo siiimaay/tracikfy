@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 abstract class FirestoreService<T> {
   Future<void> saveRecord({required T data});
 
