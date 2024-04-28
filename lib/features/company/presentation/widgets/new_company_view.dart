@@ -5,6 +5,7 @@ import 'package:trackify/features/company/presentation/company_detail_bloc/compa
 import 'package:trackify/features/company/presentation/widgets/company_detail_section.dart';
 import 'package:trackify/features/company/presentation/widgets/detail_item.dart';
 
+import '../../../../core/injection/locator.dart';
 import '../../../../global/submit_button.dart';
 import '../../data/company.dart';
 
@@ -31,7 +32,7 @@ class _NewCompanyDetailFormState extends State<NewCompanyDetailForm> {
         title: Text("Company Details"),
       ),
       body: BlocProvider(
-        create: (context) => CompanyDetailBloc(),
+        create: (context) => getIt.get<CompanyDetailBloc>(),
         child: BlocBuilder<CompanyDetailBloc, CompanyDetailState>(
           builder: (context, state) {
             return Container(

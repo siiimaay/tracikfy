@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
+import 'package:trackify/core/service/firestore_service.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../core/service/firestore_service.dart';
 import '../data/company.dart';
+@Named("company_firestore")
 @Injectable(as: FirestoreService)
-class CompanyStorageService implements FirestoreService<Company> {
+class CompanyStorageService implements FirestoreService {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final _collection = FirebaseFirestore.instance.collection('company');
 
@@ -44,7 +44,7 @@ class CompanyStorageService implements FirestoreService<Company> {
   }
 
   @override
-  Future<void> saveRecord({required Company data}) async {
+  Future<void> saveRecord({required dynamic data}) async {
     final id = const Uuid().v4();
     final company = Company(
       company: data.company,
