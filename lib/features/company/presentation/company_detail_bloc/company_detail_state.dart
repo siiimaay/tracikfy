@@ -1,4 +1,3 @@
-// counter/counter_state.dart
 
 part of 'company_detail_bloc.dart';
 

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
 
 import 'package:trackify/features/company/presentation/widgets/new_company_view.dart';
@@ -26,22 +27,32 @@ class CompanyView extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               BlocBuilder<CompanyCubit, CompanyState>(
-                builder: (context, state) {
-                  return GridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20,
-                    children: const [
-                      Frame(),
-                      Frame(),
-                      Frame(),
-                      Frame(),
-                      Frame(),
-                      Frame()
-                    ],
-                  );
-                },
-              ),
+                  buildWhen: (previous, current) =>
+                      previous.companies != current.companies || previous.isLoading != current.isLoading,
+                  builder: (context, state) {
+                    if (state.isLoading) {
+                      context.loaderOverlay.show();
+                    }
+                    if (state.companies.isEmpty) {
+                      context.loaderOverlay.hide();
+                      return const Center(
+                        child: Text("Empty"),
+                      );
+                    } else {
+                      context.loaderOverlay.hide();
+                      return GridView.builder(
+                        itemCount: state.companies.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          mainAxisSpacing: 20,
+                          crossAxisSpacing: 20,
+                          crossAxisCount: state.companies.length,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Frame(label: state.companies[index].company);
+                        },
+                      );
+                    }
+                  }),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 16),
                 child: Align(

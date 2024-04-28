@@ -59,7 +59,7 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                         color: Colors.transparent,
                         border: Border.all(
                             color: context.color.appThemeMainColor, width: 1.4),
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +69,7 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                               spacing: 6.0,
                               children: _selectedItems.isEmpty
                                   ? [
-                                      Text("Department",
+                                      Text("Please select department",
                                           style: context.textStyle.detailText
                                               .copyWith(
                                             color:
@@ -124,7 +124,7 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: ListView.builder(
                         padding: EdgeInsets.zero,

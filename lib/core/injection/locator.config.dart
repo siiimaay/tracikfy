@@ -10,12 +10,17 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:trackify/core/service/auth_service.dart' as _i6;
-import 'package:trackify/core/service/firestore_service.dart' as _i4;
-import 'package:trackify/features/auth/domain/login_service.dart' as _i7;
-import 'package:trackify/features/auth/domain/sign_up_cubit.dart' as _i8;
+import 'package:trackify/core/service/auth_service.dart' as _i9;
+import 'package:trackify/core/service/firestore_service.dart' as _i6;
+import 'package:trackify/features/auth/domain/login_service.dart' as _i10;
+import 'package:trackify/features/auth/domain/sign_up_cubit.dart' as _i11;
+import 'package:trackify/features/candidate/bloc/employee_bloc.dart' as _i5;
+import 'package:trackify/features/candidate/domain/employee_storage_service.dart'
+    as _i8;
+import 'package:trackify/features/company/data/repository/company_repository.dart'
+    as _i4;
 import 'package:trackify/features/company/domain/comp_storage_service.dart'
-    as _i5;
+    as _i7;
 import 'package:trackify/features/company/presentation/company_detail_bloc/company_detail_bloc.dart'
     as _i3;
 
@@ -31,12 +36,19 @@ extension GetItInjectableX on _i1.GetIt {
       environmentFilter,
     );
     gh.factory<_i3.CompanyDetailBloc>(() => _i3.CompanyDetailBloc());
-    gh.factory<_i4.FirestoreService<dynamic>>(
-      () => _i5.CompanyStorageService(),
+    gh.factory<_i4.CompanyRepository>(() => _i4.CompanyRepository());
+    gh.factory<_i5.EmployeeBloc>(() => _i5.EmployeeBloc());
+    gh.factory<_i6.FirestoreService<dynamic>>(
+      () => _i7.CompanyStorageService(),
       instanceName: 'company_firestore',
     );
-    gh.factory<_i6.IAuthService>(() => _i7.LoginService());
-    gh.factory<_i8.SignUpCubit>(() => _i8.SignUpCubit(gh<_i6.IAuthService>()));
+    gh.factory<_i6.FirestoreService<dynamic>>(
+      () => _i8.CompanyStorageService(),
+      instanceName: 'employee_firestore',
+    );
+    gh.factory<_i9.IAuthService>(() => _i10.LoginService());
+    gh.factory<_i11.SignUpCubit>(
+        () => _i11.SignUpCubit(gh<_i9.IAuthService>()));
     return this;
   }
 }

@@ -13,10 +13,11 @@ class CompanyDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Material(
+      child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
         child: Stack(
-            alignment: Alignment.center,
+          alignment: Alignment.center,
           children: [
             SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
@@ -66,8 +67,7 @@ class CompanyDetailView extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: 0,
-
+                bottom: 0,
                 child: SubmitButton(
                   buttonText: 'Update',
                   onPressed: () {},
@@ -75,7 +75,7 @@ class CompanyDetailView extends StatelessWidget {
                 ))
           ],
         ),
-
+      ),
     );
   }
 }

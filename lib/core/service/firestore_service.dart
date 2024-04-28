@@ -8,5 +8,5 @@ abstract class FirestoreService<T> {
 
   Future<void> updateRecord();
 
-  Future<List<T>> fetchRecords();
+  Future<List<T>>? fetchRecords();
 }

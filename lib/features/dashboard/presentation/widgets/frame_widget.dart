@@ -32,7 +32,7 @@ class Frame extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Company name (4)",
+              label ?? "Company",
               style: context.textStyle.companyNameText,
               softWrap: true,
             ),

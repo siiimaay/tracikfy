@@ -2,15 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:trackify/core/service/firestore_service.dart';
+import 'package:trackify/features/candidate/data/employee_status.dart';
 import 'package:uuid/uuid.dart';
 
-import '../data/company.dart';
+import '../data/employee.dart';
 
-@Named("company_firestore")
+@Named("employee_firestore")
 @Injectable(as: FirestoreService)
 class CompanyStorageService implements FirestoreService {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final _collection = FirebaseFirestore.instance.collection('company');
+  final _collection = FirebaseFirestore.instance.collection('employee');
 
   @override
   Future<void> deleteRecord({String? id}) async {
@@ -22,8 +23,8 @@ class CompanyStorageService implements FirestoreService {
   }
 
   @override
-  Future<List<Company>>? fetchRecords() {
-    List<Company> companies = [];
+  Future<List<Employee>>? fetchRecords() {
+    List<Employee> employees = [];
 
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -35,10 +36,10 @@ class CompanyStorageService implements FirestoreService {
           .then((querySnapshot) {
         for (var doc in querySnapshot.docs) {
           var data = doc.data();
-          companies.add(Company.fromJson(data));
+          // employees.add(Company.fromJson(data));
         }
 
-        return companies;
+        return employees;
       });
     } catch (e) {}
     return null;
@@ -53,12 +54,12 @@ class CompanyStorageService implements FirestoreService {
   Future<void> saveRecord({required dynamic data}) async {
     final id = const Uuid().v4();
     final userId = FirebaseAuth.instance.currentUser?.uid;
-    final company = Company(
-      company: data.company,
-      workArea: data.workArea,
-      phoneNo: data.phoneNo,
-      userId: userId,
-    ).toJson();
-    await _firebaseFirestore.collection('company').doc(id).set(company);
+    final employee = Employee(
+            name: '',
+            status: EmployeeStatus.active,
+            department: [],
+            companyId: '')
+        .toJson();
+    await _firebaseFirestore.collection('employee').doc(id).set(employee);
   }
 }

@@ -1,13 +1,26 @@
+import 'package:equatable/equatable.dart';
+
 import '../../data/company.dart';
 
-final class CompanyState {
+class CompanyState extends Equatable {
   final List<Company> companies;
+  final bool isLoading;
 
-  CompanyState({this.companies = const []});
+  const CompanyState({
+    this.companies = const [],
+    this.isLoading = false,
+  });
 
   CompanyState copyWith({
     List<Company>? companies,
+    bool? isLoading,
   }) {
-    return CompanyState(companies: companies ?? this.companies);
+    return CompanyState(
+      companies: companies ?? this.companies,
+      isLoading: isLoading ?? this.isLoading,
+    );
   }
+
+  @override
+  List<Object?> get props => [companies, isLoading];
 }
