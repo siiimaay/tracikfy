@@ -1,8 +1,8 @@
 enum EmployeeStatus {
-  active(name: "ACTIVE"),
+  active(name: "Active"),
   deactivated(name: "DEACTIVATED"),
-  interviewed(name: "INTERVIEWED"),
-  onboarding(name: "ONBOARDING");
+  interviewing(name: "Interviewing"),
+  onboarding(name: "Onboarding");
   final String name;
   const EmployeeStatus({required this.name});
 }

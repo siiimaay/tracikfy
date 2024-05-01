@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
 import 'package:trackify/features/company/presentation/widgets/company_detail_section.dart';
 import 'package:trackify/features/company/presentation/widgets/detail_item.dart';
+import 'package:trackify/global/expandable_section.dart';
 
-import '../../../global/multi_select_dropdown.dart';
-import '../../../global/submit_button.dart';
+import '../../../../global/submit_button.dart';
 
-class NewCompanyDetailForm extends StatelessWidget {
-  static const route = "new_company_view";
+class CompanyDetailView extends StatelessWidget {
+  static const route = "company_detail_view";
 
-  const NewCompanyDetailForm({super.key});
+  const CompanyDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: context.color.settingsBackColor,
-      body: Container(
+    return Material(
+      child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
         child: Stack(
           alignment: Alignment.center,
@@ -31,9 +29,9 @@ class NewCompanyDetailForm extends StatelessWidget {
                   children: [
                     const Center(
                         child: CircleAvatar(
-                          maxRadius: 75,
-                          backgroundColor: Colors.grey,
-                        )),
+                      maxRadius: 75,
+                      backgroundColor: Colors.grey,
+                    )),
                     const SizedBox(height: 16),
                     CompanyDetailSection(
                         sectionName: "Company Details",
@@ -61,7 +59,9 @@ class NewCompanyDetailForm extends StatelessWidget {
                                 color: const Color(0xff09093b).withOpacity(0.7),
                               )),
                         ]),
-
+                    const Expanded(
+                      child: ExpandableSection(sectionName: "Employees"),
+                    ),
                   ],
                 ),
               ),
@@ -69,7 +69,7 @@ class NewCompanyDetailForm extends StatelessWidget {
             Positioned(
                 bottom: 0,
                 child: SubmitButton(
-                  buttonText: 'Save',
+                  buttonText: 'Update',
                   onPressed: () {},
                   color: const Color(0xff09093b),
                 ))

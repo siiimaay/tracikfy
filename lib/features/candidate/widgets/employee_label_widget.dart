@@ -3,8 +3,10 @@ import 'package:trackify/features/candidate/data/employee_status.dart';
 
 class EmployeeStatusLabel extends StatelessWidget {
   final EmployeeStatus? status;
+  final bool shouldShowIcon;
 
-  const EmployeeStatusLabel({super.key, this.status});
+  const EmployeeStatusLabel(
+      {super.key, this.status, this.shouldShowIcon = true});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +16,8 @@ class EmployeeStatusLabel extends StatelessWidget {
           height: 30,
           width: 100,
           decoration: BoxDecoration(
-            color: Colors.blue.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(24)
-          ),
+              color: Colors.blue.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(24)),
           child: Center(
             child: Text(
               status?.name ?? "ACTIVE",
@@ -24,18 +25,19 @@ class EmployeeStatusLabel extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          top:-1,
-          left: -3,
-          child: Transform.rotate(
-            angle: 45,
-            child: const Icon(
-              Icons.attachment_outlined,
-              color: Colors.blue,
-              size: 18,
+        if (shouldShowIcon)
+          Positioned(
+            top: -1,
+            left: -3,
+            child: Transform.rotate(
+              angle: 45,
+              child: const Icon(
+                Icons.attachment_outlined,
+                color: Colors.blue,
+                size: 18,
+              ),
             ),
           ),
-        ),
       ],
     );
   }

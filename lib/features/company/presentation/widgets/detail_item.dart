@@ -8,6 +8,7 @@ class DetailItem extends StatefulWidget {
   final String valueText;
   final VoidCallback? onTap;
   final bool isSwitchSetting;
+  final TextEditingController? textEditingController;
 
   const DetailItem({
     Key? key,
@@ -16,6 +17,7 @@ class DetailItem extends StatefulWidget {
     required this.valueText,
     this.onTap,
     this.isSwitchSetting = false,
+    this.textEditingController,
   }) : super(key: key);
 
   @override
@@ -23,13 +25,11 @@ class DetailItem extends StatefulWidget {
 }
 
 class _DetailItemState extends State<DetailItem> {
-  late final TextEditingController textEditingController;
   late final FocusNode focusNode;
 
   @override
   void initState() {
     super.initState();
-    textEditingController = TextEditingController();
     focusNode = FocusNode();
   }
 
@@ -59,13 +59,15 @@ class _DetailItemState extends State<DetailItem> {
             Expanded(
                 child: Text(
               widget.text,
-              style: context.textStyle.detailText.copyWith(color: context.color.accountInfoColor),
+              style: context.textStyle.detailText
+                  .copyWith(color: context.color.accountInfoColor),
             )),
             Expanded(
               child: EditableText(
-                controller: textEditingController,
+                controller: widget.textEditingController ?? TextEditingController(),
                 focusNode: FocusNode(),
-                style: context.textStyle.detailText.copyWith(color: const Color(0xff09093b)),
+                style: context.textStyle.detailText
+                    .copyWith(color: const Color(0xff09093b)),
                 scrollPadding: EdgeInsets.zero,
                 cursorColor: context.color.accountInfoColor,
                 backgroundCursorColor: Colors.transparent,

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:go_router/go_router.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
-import 'package:trackify/features/company/presentation/company_details_view.dart';
+import 'package:trackify/features/company/presentation/widgets/company_details_view.dart';
 import 'package:trackify/features/company/presentation/company_view.dart';
 import 'package:trackify/features/company/presentation/widgets/employee_image_widget.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class Frame extends StatelessWidget {
     Key? key,
     this.color,
     this.onTap,
-     this.label,
+    this.label,
   }) : super(key: key);
 
   @override
@@ -32,7 +32,7 @@ class Frame extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Company name (4)",
+              label ?? "Company",
               style: context.textStyle.companyNameText,
               softWrap: true,
             ),

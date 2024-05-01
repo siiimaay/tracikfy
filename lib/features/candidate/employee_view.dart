@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
 import 'package:trackify/features/candidate/widgets/employee_detail_card.dart';
 import 'package:trackify/features/candidate/widgets/employee_detail_widget.dart';
+import 'package:trackify/features/dashboard/app_bar_wrapper.dart';
 
 class CandidateView extends StatefulWidget {
   static const route = "/candidate_view";
@@ -29,8 +30,8 @@ class _CandidateViewState extends State<CandidateView>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return AppBarWrapper(
+      child: Stack(
         children: [
           Column(
             children: [
@@ -53,9 +54,12 @@ class _CandidateViewState extends State<CandidateView>
                         borderRadius: BorderRadius.circular(10),
                         color: const Color(0x1a243ffa),
                       ),
-                      child:  SizedBox(
+                      child: SizedBox(
                         child: Center(
-                          child: Text("Current Employees", style: context.textStyle.detailText,),
+                          child: Text(
+                            "Current Employees",
+                            style: context.textStyle.detailText,
+                          ),
                         ),
                       ),
                     ),
@@ -93,18 +97,19 @@ class _CandidateViewState extends State<CandidateView>
             ],
           ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 24,horizontal: 24),
+            margin: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
             child: Align(
               alignment: Alignment.bottomRight,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: context.color.appThemeMainColor,
-                    foregroundColor: Colors.white,
-                    elevation: 8,
-                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24)
-                  ),
+                      backgroundColor: context.color.appThemeMainColor,
+                      foregroundColor: Colors.white,
+                      elevation: 8,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 24)),
                   onPressed: () {
-                    context.push("${CandidateView.route}/${EmployeeDetailView.route}");
+                    context.push(
+                        "${CandidateView.route}/${EmployeeDetailView.route}");
                   },
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
