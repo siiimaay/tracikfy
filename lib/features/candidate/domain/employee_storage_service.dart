@@ -36,7 +36,7 @@ class CompanyStorageService implements FirestoreService {
           .then((querySnapshot) {
         for (var doc in querySnapshot.docs) {
           var data = doc.data();
-          // employees.add(Company.fromJson(data));
+          employees.add(Employee.fromJson(data));
         }
 
         return employees;
@@ -53,12 +53,14 @@ class CompanyStorageService implements FirestoreService {
   @override
   Future<void> saveRecord({required dynamic data}) async {
     final id = const Uuid().v4();
+    final employeeData = (data as Employee);
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final employee = Employee(
-            name: '',
+            userId: userId,
+            name: employeeData.name,
             status: EmployeeStatus.active,
-            department: [],
-            companyId: '')
+            department: employeeData.department,
+            companyId: employeeData.companyId)
         .toJson();
     await _firebaseFirestore.collection('employee').doc(id).set(employee);
   }

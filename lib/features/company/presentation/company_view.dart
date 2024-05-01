@@ -42,10 +42,10 @@ class CompanyView extends StatelessWidget {
                       context.loaderOverlay.hide();
                       return GridView.builder(
                         itemCount: state.companies.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          mainAxisSpacing: 20,
-                          crossAxisSpacing: 20,
-                          crossAxisCount: state.companies.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          crossAxisCount: 2,
                         ),
                         itemBuilder: (BuildContext context, int index) {
                           return Frame(label: state.companies[index].company);

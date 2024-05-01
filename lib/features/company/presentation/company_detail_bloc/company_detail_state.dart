@@ -4,7 +4,7 @@ part of 'company_detail_bloc.dart';
 @freezed
 class CompanyDetailState with _$CompanyDetailState {
   const factory CompanyDetailState({
-    bool? isLoading,
+    @Default(false) bool isLoading,
     bool? isOperationSuccessful,
   }) = _CompanyDetailState;
 

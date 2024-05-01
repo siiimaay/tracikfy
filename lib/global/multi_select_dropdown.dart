@@ -4,9 +4,10 @@ import 'package:trackify/core/extensions/context_extension.dart';
 class MultiSelectDropdown<T> extends StatefulWidget {
   final List<T> items;
   final String hint;
-  final Function(List<T>) onSelectedItemsChanged;
+  final Function(List) onSelectedItemsChanged;
   final List<T> selectedItems;
   final Function(T item) itemNameBuilder;
+  final Function()? onLoad;
 
   const MultiSelectDropdown({
     super.key,
@@ -15,6 +16,7 @@ class MultiSelectDropdown<T> extends StatefulWidget {
     required this.onSelectedItemsChanged,
     required this.selectedItems,
     required this.itemNameBuilder,
+    this.onLoad,
   });
 
   @override
@@ -24,17 +26,26 @@ class MultiSelectDropdown<T> extends StatefulWidget {
 class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
   bool _isExpanded = false;
   List<T> _selectedItems = [];
+  late final ScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
     _selectedItems = widget.selectedItems;
+    widget.onLoad?.call();
+    scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 18.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -54,11 +65,11 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 18.0),
+                          horizontal: 20.0, vertical: 16.0),
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
-                            color: context.color.appThemeMainColor, width: 1.4),
+                            color: context.color.appThemeMainColor, width: 1.6),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Row(
@@ -69,7 +80,7 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                               spacing: 6.0,
                               children: _selectedItems.isEmpty
                                   ? [
-                                      Text("Please select department",
+                                      Text(widget.hint,
                                           style: context.textStyle.detailText
                                               .copyWith(
                                             color:
@@ -126,32 +137,46 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        itemCount: widget.items.length,
-                        itemBuilder: (context, index) {
-                          final item = widget.items[index];
-                          return ListTile(
-                            title: Text(widget.itemNameBuilder(item)),
-                            trailing: _selectedItems.contains(item)
-                                ? const Icon(
-                                    Icons.check_circle,
-                                  )
-                                : null,
-                            onTap: () {
-                              setState(() {
-                                if (_selectedItems.contains(item)) {
-                                  _selectedItems.remove(item);
-                                } else {
-                                  _selectedItems.add(item);
-                                }
-                                widget.onSelectedItemsChanged(_selectedItems);
-                                _isExpanded = false;
-                              });
+                      child: ScrollbarTheme(
+                        data: ScrollbarThemeData(
+                          radius: const Radius.circular(8),
+                          mainAxisMargin: 4,
+                          thumbColor: MaterialStatePropertyAll(
+                              Colors.grey.withOpacity(0.4)),
+                        ),
+                        child: Scrollbar(
+                          thumbVisibility: true,
+                          controller: scrollController,
+                          child: ListView.builder(
+                            controller: scrollController,
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            itemCount: widget.items.length,
+                            itemBuilder: (context, index) {
+                              final item = widget.items[index];
+                              return ListTile(
+                                title: Text(widget.itemNameBuilder(item)),
+                                trailing: _selectedItems.contains(item)
+                                    ? const Icon(
+                                        Icons.check_circle,
+                                      )
+                                    : null,
+                                onTap: () {
+                                  setState(() {
+                                    if (_selectedItems.contains(item)) {
+                                      _selectedItems.remove(item);
+                                    } else {
+                                      _selectedItems.add(item);
+                                    }
+                                    widget
+                                        .onSelectedItemsChanged(_selectedItems);
+                                    _isExpanded = false;
+                                  });
+                                },
+                              );
                             },
-                          );
-                        },
+                          ),
+                        ),
                       ),
                     ),
                 ],

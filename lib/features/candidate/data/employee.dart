@@ -7,15 +7,17 @@ part 'employee.g.dart';
 @JsonSerializable()
 class Employee {
   final String name;
+  final String? userId;
   final EmployeeStatus status;
-  final List<String> department;
-  final String companyId;
+  final List<dynamic> department;
+  final String? companyId;
 
-  Employee({
+  Employee( {
     required this.name,
     required this.status,
     required this.department,
     required this.companyId,
+    this.userId,
   });
 
   factory Employee.fromJson(Map<String, dynamic> json) =>

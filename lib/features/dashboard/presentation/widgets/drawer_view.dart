@@ -1,3 +1,4 @@
+import 'package:trackify/features/auth/presentation/login_view.dart';
 import 'package:trackify/features/candidate/employee_view.dart';
 import 'package:trackify/features/company/presentation/company_view.dart';
 import 'package:trackify/features/dashboard/presentation/dashboard_cubit.dart';
@@ -66,9 +67,20 @@ class DrawerView extends StatelessWidget {
                             context.go(CompanyView.route);
                           },
                           prefix: const Icon(Icons.business),
-                        )
+                        ),
+
                       ],
                     ),
+                  )
+                  ,
+                  TabView(
+                    isSelected: state.currentIndex == 3,
+                    text: DashboardSection.logout.name,
+                    onTap: () {
+                      context.read<DashboardCubit>().updateSelection(3);
+                      context.go(LoginView.route);
+                    },
+                    prefix: const Icon(Icons.logout),
                   )
                 ],
               ),

@@ -20,7 +20,7 @@ class CompanyDetailBloc extends Bloc<CompanyDetailEvent, CompanyDetailState> {
   CompanyDetailBloc()
       : super(CompanyDetailState.initial()) {
     on<CompanyDetailEvent>((event, emit) {
-      event.map(save: (event) {
+      event.map(save: (event)  {
         emit(state.copyWith(isLoading: true));
          CompanyRepository().saveCompany(company: event.data);
         emit(state.copyWith(isLoading: false));

@@ -16,7 +16,7 @@ class Frame extends StatelessWidget {
     Key? key,
     this.color,
     this.onTap,
-     this.label,
+    this.label,
   }) : super(key: key);
 
   @override
