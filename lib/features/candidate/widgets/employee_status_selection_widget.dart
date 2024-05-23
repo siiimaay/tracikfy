@@ -17,7 +17,7 @@ class _EmployeeSelectionStatusState extends State<EmployeeSelectionStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         RadioButton(

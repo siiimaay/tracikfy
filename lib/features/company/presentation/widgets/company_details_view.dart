@@ -60,7 +60,7 @@ class CompanyDetailView extends StatelessWidget {
                               )),
                         ]),
                     const Expanded(
-                      child: ExpandableSection(sectionName: "Employees"),
+                      child: ExpandableSection(sectionName: "Team"),
                     ),
                   ],
                 ),

@@ -6,6 +6,7 @@ import 'package:trackify/features/company/data/repository/company_repository.dar
 
 import '../../../core/injection/locator.dart';
 import '../../company/data/company.dart';
+import '../data/employee.dart';
 
 part 'employee_event.dart';
 
@@ -27,6 +28,7 @@ class EmployeeBloc extends Bloc<EmployeeDetailEvent, EmployeeDetailState> {
                 .then((_) {
               emit(state.copyWith(isLoading: false));
             });
+
           } catch (e) {
             // Handle any errors here
             emit(state.copyWith(isLoading: false));
@@ -39,8 +41,18 @@ class EmployeeBloc extends Bloc<EmployeeDetailEvent, EmployeeDetailState> {
                 (value) => emit(state.copyWith(
                     companies: value as List<Company>, isLoading: false)));
           } catch (e) {
-            print(e);
             // Handle any errors here
+            emit(state.copyWith(isLoading: false));
+          }
+        },
+        fetchEmployees: (value) async {
+          emit(state.copyWith(isLoading: true));
+          try {
+          await getIt.get<EmployeeRepository>().fetchEmployees().then(
+                    (value) => emit(state.copyWith(
+                    employees: value as List<Employee>, isLoading: false)));
+          } catch (e) {
+            print(e);
             emit(state.copyWith(isLoading: false));
           }
         },

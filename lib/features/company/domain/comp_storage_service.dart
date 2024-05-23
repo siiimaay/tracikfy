@@ -24,7 +24,6 @@ class CompanyStorageService implements FirestoreService {
   @override
   Future<List<Company>>? fetchRecords() {
     List<Company> companies = [];
-    print("asdadsadadawdASDSA");
 
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -36,10 +35,8 @@ class CompanyStorageService implements FirestoreService {
           .then((querySnapshot) {
         for (var doc in querySnapshot.docs) {
           var data = doc.data();
-          print(data);
           companies.add(Company.fromJson(data));
         }
-        print("should be $userId $companies");
 
 
         return companies;

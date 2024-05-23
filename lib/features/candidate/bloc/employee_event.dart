@@ -8,7 +8,7 @@ class EmployeeDetailEvent with _$EmployeeDetailEvent {
   const factory EmployeeDetailEvent.selectCompany(Company company) = _SelectCompany;
   const factory EmployeeDetailEvent.selectDepartment(List<dynamic> department) = _SelectDepartment;
   const factory EmployeeDetailEvent.selectStatus(String status) = _SelectStatus;
-
+  const factory EmployeeDetailEvent.fetchEmployees() = _FetchEmployees;
 
 
 }

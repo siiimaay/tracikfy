@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
 import 'package:trackify/features/candidate/bloc/employee_bloc.dart';
-import 'package:trackify/features/candidate/data/employee_status.dart';
-import 'package:trackify/features/candidate/widgets/employee_status_selection_widget.dart';
+import 'package:trackify/features/candidate/widgets/employee_select_status_widget.dart';
 import 'package:trackify/features/company/presentation/widgets/company_detail_section.dart';
 import 'package:trackify/features/company/presentation/widgets/detail_item.dart';
-import 'package:trackify/global/expandable_section.dart';
 
-import '../../../global/checkbox.dart';
 import '../../../global/multi_select_dropdown.dart';
 import '../../../global/single_select_dropdown.dart';
 import '../../../global/submit_button.dart';
@@ -56,24 +54,41 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                 return SingleChildScrollView(
                   physics: const ClampingScrollPhysics(),
                   child: SizedBox(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height,
+                    height: MediaQuery.of(context).size.height,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (!isVisible)
+                        /*if (!isVisible)
                           const Center(
                               child: CircleAvatar(
                                 maxRadius: 75,
                                 backgroundColor: Colors.grey,
-                              )),
+                              )),*/
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            "| Add new Employee",
+                            style: context.textStyle.detailText.copyWith(
+                                color: context.color.appThemeMainColor,
+                                fontSize: 20),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const ButtonSelectionPage(),
                         const SizedBox(height: 16),
                         CompanyDetailSection(settingsItems: [
                           DetailItem(
                             text: "Employee name",
+                            valueText: "Value",
+                            prefixIcon: Icon(
+                              Icons.account_balance_outlined,
+                              color: const Color(0xff09093b).withOpacity(0.7),
+                            ),
+                            textEditingController: employeeNameController,
+                          ),
+                          DetailItem(
+                            text: "Title",
                             valueText: "Value",
                             prefixIcon: Icon(
                               Icons.account_balance_outlined,
@@ -102,11 +117,17 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                               },
                             ),
                           ),
-                          BlocBuilder<EmployeeBloc, EmployeeDetailState>(
+                          BlocConsumer<EmployeeBloc, EmployeeDetailState>(
+                            listener: (context, state) => {
+                              if (state.isLoading == true)
+                                {context.loaderOverlay.show()}
+                            },
                             buildWhen: (o, n) =>
-                            o.companies != n.companies ||
-                                o.selectedCompany != n.selectedCompany,
+                                o.companies != n.companies ||
+                                o.selectedCompany != n.selectedCompany ||
+                                o.isLoading != n.isLoading,
                             builder: (context, state) {
+                              context.loaderOverlay.hide();
                               return Flexible(
                                 fit: FlexFit.loose,
                                 child: SingleSelectDropdown(
@@ -118,10 +139,9 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                                             (item as Company)));
                                   },
                                   selectedItem: state.selectedCompany,
-                                  onLoad: () =>
-                                      context
-                                          .read<EmployeeBloc>()
-                                          .add(const EmployeeDetailEvent
+                                  onLoad: () => context
+                                      .read<EmployeeBloc>()
+                                      .add(const EmployeeDetailEvent
                                           .fetchCompanies()),
                                   itemNameBuilder: (dynamic item) {
                                     final companyName =
@@ -132,12 +152,13 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                               );
                             },
                           ),
-                          EmployeeSelectionStatus(
+                          /* EmployeeSelectionStatus(
                             onTap: (value) {
-                              context.read<EmployeeBloc>().add(
-                                  EmployeeDetailEvent.selectStatus(value));
+                              context
+                                  .read<EmployeeBloc>()
+                                  .add(EmployeeDetailEvent.selectStatus(value));
                             },
-                          )
+                          ),*/
                         ]),
                       ],
                     ),
@@ -154,7 +175,7 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                           context.read<EmployeeBloc>().add(
                               EmployeeDetailEvent.save(Employee(
                                   name: employeeNameController.text,
-                                  status: EmployeeStatus.active,
+                                  status: state.employeeStatus.toString(),
                                   department: state.selectedDepartment,
                                   companyId: state.selectedCompany?.id)));
                         },

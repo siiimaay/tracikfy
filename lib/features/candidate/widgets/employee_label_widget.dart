@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trackify/features/candidate/data/employee_status.dart';
 
 class EmployeeStatusLabel extends StatelessWidget {
-  final EmployeeStatus? status;
+  final String? status;
   final bool shouldShowIcon;
 
   const EmployeeStatusLabel(
@@ -20,7 +20,7 @@ class EmployeeStatusLabel extends StatelessWidget {
               borderRadius: BorderRadius.circular(24)),
           child: Center(
             child: Text(
-              status?.name ?? "ACTIVE",
+              status ?? "ACTIVE",
               style: const TextStyle(color: Colors.blue, fontSize: 13),
             ),
           ),

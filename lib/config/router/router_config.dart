@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:trackify/features/auth/presentation/login_view.dart';
 import 'package:trackify/features/candidate/employee_view.dart';
 import 'package:trackify/features/candidate/widgets/employee_detail_widget.dart';
+import 'package:trackify/features/candidate/widgets/existing_employee_detail_view.dart';
 import 'package:trackify/features/company/presentation/company_view.dart';
 import 'package:trackify/features/company/presentation/widgets/new_company_view.dart';
 import 'package:trackify/features/dashboard/presentation/dashboard_view.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/sign_up_view.dart';
+import '../../features/candidate/data/employee.dart';
+import '../../features/candidate/data/employee_ui_model.dart';
 import '../../features/company/presentation/widgets/company_details_view.dart';
 
 class AppRouterConfig {
@@ -64,6 +67,13 @@ class AppRouterConfig {
                         path: EmployeeDetailView.route,
                         builder: (context, state) {
                           return const EmployeeDetailView();
+                        }),
+                    GoRoute(
+                        path: ExistingEmployeeDetailView.route,
+                        builder: (context, state) {
+                          final employeeDetail = state.extra as EmployeeData;
+                          return ExistingEmployeeDetailView(
+                              employee: employeeDetail);
                         }),
                   ],
                   builder: (context, state) {

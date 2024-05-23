@@ -8,7 +8,7 @@ part 'employee.g.dart';
 class Employee {
   final String name;
   final String? userId;
-  final EmployeeStatus status;
+  final String status;
   final List<dynamic> department;
   final String? companyId;
 

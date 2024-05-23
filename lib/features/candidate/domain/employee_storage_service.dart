@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:trackify/core/service/firestore_service.dart';
-import 'package:trackify/features/candidate/data/employee_status.dart';
 import 'package:uuid/uuid.dart';
 
 import '../data/employee.dart';
@@ -41,8 +40,9 @@ class CompanyStorageService implements FirestoreService {
 
         return employees;
       });
-    } catch (e) {}
-    return null;
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
@@ -58,7 +58,7 @@ class CompanyStorageService implements FirestoreService {
     final employee = Employee(
             userId: userId,
             name: employeeData.name,
-            status: EmployeeStatus.active,
+            status: employeeData.status,
             department: employeeData.department,
             companyId: employeeData.companyId)
         .toJson();

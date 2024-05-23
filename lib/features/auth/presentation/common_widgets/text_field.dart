@@ -23,16 +23,17 @@ class InputTextField extends StatelessWidget {
         validator: (value) {
           //return controller.text.isValidField();
         },
+        focusNode: FocusNode(),
         decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(15),
             borderSide: const BorderSide(
               color: Colors.indigo,
               width: 1.5,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide(
               color: Colors.grey.shade600,
               width: 1.5,

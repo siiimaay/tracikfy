@@ -9,6 +9,7 @@ class EmployeeDetailState with _$EmployeeDetailState {
     @Default("") employeeStatus,
     bool? isOperationSuccessful,
     @Default([]) List<Company> companies,
+    @Default([]) List<Employee> employees,
   }) = _EmployeeDetailState;
 
   factory EmployeeDetailState.initial() {
