@@ -24,6 +24,7 @@ class _EmployeesViewState extends State<EmployeesView> {
   void initState() {
     super.initState();
     context
+
         .read<EmployeeBloc>()
         .add(const EmployeeDetailEvent.fetchEmployees());
   }

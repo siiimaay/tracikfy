@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
+import 'package:trackify/features/candidate/data/employee.dart';
 import '../../../global/multi_select_dropdown.dart';
 import 'add_meeting_cubit/add_meeting_cubit.dart';
 import 'add_meeting_cubit/add_meeting_state.dart';
@@ -18,7 +19,7 @@ class AddMeetingScreen extends StatefulWidget {
 class AddMeetingScreenState extends State<AddMeetingScreen> {
   final _formKey = GlobalKey<FormState>();
   final FocusNode _focusNode = FocusNode();
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -46,19 +47,8 @@ class AddMeetingScreenState extends State<AddMeetingScreen> {
   void initState() {
     super.initState();
     _focusNode.addListener(() {
-      if (_focusNode.hasFocus) {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-        });
-      }
+      scrollController.jumpTo(scrollController.position.maxScrollExtent + 30);
     });
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    _scrollController.dispose();
-    super.dispose();
   }
 
   @override
@@ -79,50 +69,47 @@ class AddMeetingScreenState extends State<AddMeetingScreen> {
         create: (context) => AddMeetingCubit(),
         child: BlocBuilder<AddMeetingCubit, AddMeetingState>(
           builder: (context, state) {
-            return Stack(
-              children: [
-                SingleChildScrollView(
-                  controller: _scrollController,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: KeyboardVisibilityBuilder(
-                      builder: (context, isVisible) {
-                        return Padding(
-                          padding: const EdgeInsets.all(30.0),
-                          child: Form(
-                            key: _formKey,
-                            child: ListView(
-                 controller: ScrollController(),
-
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () => _selectDate(context),
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: Colors.grey),
-                                            borderRadius: BorderRadius.circular(8.0),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              const SizedBox(width: 8.0),
-                                              Icon(Icons.calendar_today, color: context.color.appThemeMainColor),
-                                              const SizedBox(width: 8.0),
-                                              Text(
-                                                "${state.selectedDate.toLocal()}".split(' ')[0],
-                                                style: const TextStyle(fontSize: 16.0),
-                                              ),
-                                            ],
-                                          ),
+            return KeyboardVisibilityBuilder(
+              builder: (context, isVisible) {
+                return Stack(
+                  children: [
+                    SingleChildScrollView(
+                      controller: scrollController,
+                      child: Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () => _selectDate(context),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.grey),
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            const SizedBox(width: 8.0),
+                                            Icon(Icons.calendar_today, color: context.color.appThemeMainColor),
+                                            const SizedBox(width: 8.0),
+                                            Text(
+                                              "${state.selectedDate.toLocal()}".split(' ')[0],
+                                              style: const TextStyle(fontSize: 16.0),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 16.0),
-                                    GestureDetector(
+                                  ),
+                                  const SizedBox(width: 16.0),
+                                  Expanded(
+                                    child: GestureDetector(
                                       onTap: () => _selectTime(context),
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -143,130 +130,128 @@ class AddMeetingScreenState extends State<AddMeetingScreen> {
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                                const SizedBox(height: 16.0),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Title',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
                                   ),
-                                  onChanged: (value) {
-                                    context.read<AddMeetingCubit>().updateTitle(value);
-                                  },
+                                ],
+                              ),
+                              const SizedBox(height: 16.0),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  labelText: 'Title',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
                                 ),
-                                const SizedBox(height: 16.0),
-                                Text(
-                                  'Team Member',
-                                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: context.color.appThemeMainColor),
-                                ),
-                                const SizedBox(height: 8.0),
-                                MultiSelectDropdown(
-                                  items: state.employees.map((e) => e).toList(),
-                                  hint: 'Select team members',
-                                  onSelectedItemsChanged: (items) {
-                                    context.read<AddMeetingCubit>().updateEmployees(items as List<String?>);
-                                  },
-                                  isReadOnly: false,
-                                  selectedItems: [state.members.first["name"]],
-                                  itemNameBuilder: (dynamic item) {
-                                    return item;
-                                  },
-                                ),
-                                const SizedBox(height: 16.0),
-                                Text(
-                                  'Category',
-                                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: context.color.appThemeMainColor),
-                                ),
-                                const SizedBox(height: 8.0),
-                                Row(
-                                  children: context.read<AddMeetingCubit>().state.categories.map((category) {
-                                    return Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            context.read<AddMeetingCubit>().updateCategory(category);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(vertical: 16.0),
-                                            decoration: BoxDecoration(
-                                              color: (state.selectedCategory == category && state.selectedCategory.isNotEmpty) ? const Color(0xff9CA5D9) : Colors.transparent,
-                                              border: Border.all(color: Colors.grey),
-                                              borderRadius: BorderRadius.circular(8.0),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                category,
-                                                style: TextStyle(
-                                                  color: state.selectedCategory == category ? Colors.white : Colors.black,
-                                                ),
+                                onChanged: (value) {
+                                  context.read<AddMeetingCubit>().updateTitle(value);
+                                },
+                              ),
+                              const SizedBox(height: 16.0),
+                              Text(
+                                'Team Member',
+                                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: context.color.appThemeMainColor),
+                              ),
+                              const SizedBox(height: 8.0),
+                              MultiSelectDropdown(
+                                items: state.employees.map((e) => e).toList(),
+                                hint: 'Select team members',
+                                onSelectedItemsChanged: (items) {
+                                  context.read<AddMeetingCubit>().updateEmployees(items);
+                                },
+                                isReadOnly: false,
+                                selectedItems: List.empty(growable: true),
+                                itemNameBuilder: (dynamic item) {
+                                  return (item as Employee).name;
+                                },
+                              ),
+                              const SizedBox(height: 16.0),
+                              Text(
+                                'Category',
+                                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: context.color.appThemeMainColor),
+                              ),
+                              const SizedBox(height: 8.0),
+                              Row(
+                                children: context.read<AddMeetingCubit>().state.categories.map((category) {
+                                  return Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          context.read<AddMeetingCubit>().updateCategory(category);
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                          decoration: BoxDecoration(
+                                            color: (state.selectedCategory == category && state.selectedCategory.isNotEmpty) ? const Color(0xff9CA5D9) : Colors.transparent,
+                                            border: Border.all(color: Colors.grey),
+                                            borderRadius: BorderRadius.circular(8.0),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              category,
+                                              style: TextStyle(
+                                                color: state.selectedCategory == category ? Colors.white : Colors.black,
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    );
-                                  }).toList(),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 16),
-                                  child: TextFormField(
-                                    maxLines: 2,
-                                    focusNode: _focusNode,
-                                    decoration: InputDecoration(
-                                      labelText: 'Description',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8.0),
-                                      ),
                                     ),
-                                    onChanged: (value) {
-                                      context.read<AddMeetingCubit>().updateDescription(value);
-                                    },
-                                    onTapOutside: (_) => _focusNode.unfocus(),
+                                  );
+                                }).toList(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                child: TextFormField(
+                                  maxLines: 1,
+                                  focusNode: _focusNode,
+                                  decoration: InputDecoration(
+                                    labelText: 'Description',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
                                   ),
+                                  onTapOutside: (_) => _focusNode.unfocus(),
+                                  onChanged: (value) {
+                                    context.read<AddMeetingCubit>().updateDescription(value);
+                                  },
                                 ),
-                                 SizedBox(height: 80),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        );
-                      }
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<AddMeetingCubit>().saveMeeting();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.color.appThemeMainColor,
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        child: const Text(
-                          'Add Meeting',
-                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ],
+                    if(!isVisible)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                context.read<AddMeetingCubit>().saveMeeting();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: context.color.appThemeMainColor,
+                              padding: const EdgeInsets.symmetric(vertical: 16.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                            child: const Text(
+                              'Add Meeting',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),

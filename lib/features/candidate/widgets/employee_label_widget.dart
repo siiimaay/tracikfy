@@ -20,7 +20,7 @@ class EmployeeStatusLabel extends StatelessWidget {
               borderRadius: BorderRadius.circular(24)),
           child: Center(
             child: Text(
-              status ?? "ACTIVE",
+             ( status != null &&  status?.isNotEmpty == true)  ? (status ?? "ACTIVE") : "ACTIVE",
               style: const TextStyle(color: Colors.blue, fontSize: 13),
             ),
           ),

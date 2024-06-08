@@ -65,7 +65,7 @@ class EmployeeDetailCard extends StatelessWidget {
               ),
             ],
           ),
-          trailing: EmployeeStatusLabel(status: status),
+          trailing: EmployeeStatusLabel(status: status ?? "ACTIVE"),
         ),
       ),
     );

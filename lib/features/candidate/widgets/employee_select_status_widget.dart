@@ -85,7 +85,7 @@ class SelectableButton extends StatelessWidget {
         minimumSize: const Size(100, 50),
       ),
       onPressed: () => onPressed(status),
-      child: Text(text),
+      child: Text(text ?? "ACTIVE"),
     );
   }
 }

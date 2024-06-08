@@ -11,18 +11,19 @@ class AddMeetingState extends Equatable {
   final List<String> categories;
   final String selectedCategory;
   final List<Map<String, String>> members;
-  final List<String?> employees;
+  final List<dynamic> employees;
+  final List<dynamic> selectedEmployees;
 
-  const AddMeetingState({
-    required this.selectedDate,
-    required this.selectedTime,
-    required this.title,
-    required this.description,
-    required this.categories,
-    required this.members,
-    this.selectedCategory = "",
-    this.employees = const [],
-  });
+  const AddMeetingState(
+      {required this.selectedDate,
+      required this.selectedTime,
+      required this.title,
+      required this.description,
+      required this.categories,
+      required this.members,
+      this.selectedCategory = "",
+      this.employees = const [],
+      this.selectedEmployees = const []});
 
   AddMeetingState copyWith({
     DateTime? selectedDate,
@@ -32,17 +33,20 @@ class AddMeetingState extends Equatable {
     String? selectedCategory,
     List<String>? categories,
     List<Map<String, String>>? members,
-    List<String?>? employees,
+    List<dynamic>? employees,
+    List<dynamic>? selectedEmployees,
   }) {
     return AddMeetingState(
-        selectedDate: selectedDate ?? this.selectedDate,
-        selectedTime: selectedTime ?? this.selectedTime,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        categories: categories ?? this.categories,
-        members: members ?? this.members,
-        selectedCategory: selectedCategory ?? this.selectedCategory,
-        employees: employees ?? this.employees);
+      selectedDate: selectedDate ?? this.selectedDate,
+      selectedTime: selectedTime ?? this.selectedTime,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      categories: categories ?? this.categories,
+      members: members ?? this.members,
+      selectedCategory: selectedCategory ?? this.selectedCategory,
+      employees: employees ?? this.employees,
+      selectedEmployees: selectedEmployees ?? this.selectedEmployees,
+    );
   }
 
   @override
@@ -54,6 +58,7 @@ class AddMeetingState extends Equatable {
         categories,
         members,
         selectedCategory,
-        employees
+        employees,
+        selectedEmployees,
       ];
 }

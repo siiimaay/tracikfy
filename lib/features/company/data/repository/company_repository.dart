@@ -9,7 +9,7 @@ class CompanyRepository {
   late final FirestoreService _companyStorageService;
 
   CompanyRepository._() {
-   _companyStorageService =getIt.get(instanceName: "company_firestore");
+    _companyStorageService = getIt.get(instanceName: "company_firestore");
   }
 
   factory CompanyRepository() {

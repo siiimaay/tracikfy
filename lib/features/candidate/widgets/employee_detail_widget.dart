@@ -50,121 +50,127 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              KeyboardVisibilityBuilder(builder: (context, isVisible) {
-                return SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /*if (!isVisible)
-                          const Center(
-                              child: CircleAvatar(
-                                maxRadius: 75,
-                                backgroundColor: Colors.grey,
-                              )),*/
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text(
-                            "| Add new Employee",
-                            style: context.textStyle.detailText.copyWith(
-                                color: context.color.appThemeMainColor,
-                                fontSize: 20),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        const ButtonSelectionPage(),
-                        const SizedBox(height: 16),
-                        CompanyDetailSection(settingsItems: [
-                          DetailItem(
-                            text: "Employee name",
-                            valueText: "Value",
-                            prefixIcon: Icon(
-                              Icons.account_balance_outlined,
-                              color: const Color(0xff09093b).withOpacity(0.7),
+              Form(
+
+                child: KeyboardVisibilityBuilder(
+
+                    builder: (context, isVisible) {
+                  return SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          /*if (!isVisible)
+                            const Center(
+                                child: CircleAvatar(
+                                  maxRadius: 75,
+                                  backgroundColor: Colors.grey,
+                                )),*/
+                          if(!isVisible)
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Text(
+                              "| Add new Employee",
+                              style: context.textStyle.detailText.copyWith(
+                                  color: context.color.appThemeMainColor,
+                                  fontSize: 20),
                             ),
-                            textEditingController: employeeNameController,
                           ),
-                          DetailItem(
-                            text: "Title",
-                            valueText: "Value",
-                            prefixIcon: Icon(
-                              Icons.account_balance_outlined,
-                              color: const Color(0xff09093b).withOpacity(0.7),
+                          const SizedBox(height: 8),
+                          const ButtonSelectionPage(),
+                          const SizedBox(height: 16),
+                          CompanyDetailSection(settingsItems: [
+                            DetailItem(
+                              text: "Employee name",
+                              valueText: "Value",
+                              prefixIcon: Icon(
+                                Icons.account_balance_outlined,
+                                color: const Color(0xff09093b).withOpacity(0.7),
+                              ),
+                              textEditingController: employeeNameController,
                             ),
-                            textEditingController: employeeNameController,
-                          ),
-                          Flexible(
-                            fit: FlexFit.loose,
-                            child: MultiSelectDropdown(
-                              items: [
-                                "Engineering",
-                                "Product",
-                                "Engineering",
-                                "Product"
-                              ].toList(),
-                              hint: 'Select department',
-                              onSelectedItemsChanged: (items) {
-                                context.read<EmployeeBloc>().add(
-                                    EmployeeDetailEvent.selectDepartment(
-                                        items));
+                            DetailItem(
+                              text: "Title",
+                              valueText: "Value",
+                              prefixIcon: Icon(
+                                Icons.account_balance_outlined,
+                                color: const Color(0xff09093b).withOpacity(0.7),
+                              ),
+                              textEditingController: employeeNameController,
+                            ),
+                            Flexible(
+                              fit: FlexFit.loose,
+                              child: MultiSelectDropdown(
+                                items: [
+                                  "Engineering",
+                                  "Product",
+                                  "Engineering",
+                                  "Product"
+                                ].toList(),
+                                hint: 'Select department',
+                                onSelectedItemsChanged: (items) {
+                                  context.read<EmployeeBloc>().add(
+                                      EmployeeDetailEvent.selectDepartment(
+                                          items));
+                                },
+                                selectedItems: List.empty(growable: true),
+                                itemNameBuilder: (dynamic item) {
+                                  return item;
+                                },
+                              ),
+                            ),
+                            BlocConsumer<EmployeeBloc, EmployeeDetailState>(
+                              listener: (context, state) => {
+                                if (state.isLoading == true)
+                                  {context.loaderOverlay.show()}
                               },
-                              selectedItems: List.empty(growable: true),
-                              itemNameBuilder: (dynamic item) {
-                                return item;
+                              buildWhen: (o, n) =>
+                                  o.companies != n.companies ||
+                                  o.selectedCompany != n.selectedCompany ||
+                                  o.isLoading != n.isLoading,
+                              builder: (context, state) {
+                                context.loaderOverlay.hide();
+                                return Flexible(
+                                  fit: FlexFit.loose,
+                                  child: SingleSelectDropdown(
+                                    items: state.companies,
+                                    hint: 'Select company',
+                                    onSelectedItemChanged: (item) {
+                                      context.read<EmployeeBloc>().add(
+                                          EmployeeDetailEvent.selectCompany(
+                                              (item as Company)));
+                                    },
+                                    selectedItem: state.selectedCompany,
+                                    onLoad: () => context
+                                        .read<EmployeeBloc>()
+                                        .add(const EmployeeDetailEvent
+                                            .fetchCompanies()),
+                                    itemNameBuilder: (dynamic item) {
+                                      final companyName =
+                                          (item as Company).company;
+                                      return companyName;
+                                    },
+                                  ),
+                                );
                               },
                             ),
-                          ),
-                          BlocConsumer<EmployeeBloc, EmployeeDetailState>(
-                            listener: (context, state) => {
-                              if (state.isLoading == true)
-                                {context.loaderOverlay.show()}
-                            },
-                            buildWhen: (o, n) =>
-                                o.companies != n.companies ||
-                                o.selectedCompany != n.selectedCompany ||
-                                o.isLoading != n.isLoading,
-                            builder: (context, state) {
-                              context.loaderOverlay.hide();
-                              return Flexible(
-                                fit: FlexFit.loose,
-                                child: SingleSelectDropdown(
-                                  items: state.companies,
-                                  hint: 'Select company',
-                                  onSelectedItemChanged: (item) {
-                                    context.read<EmployeeBloc>().add(
-                                        EmployeeDetailEvent.selectCompany(
-                                            (item as Company)));
-                                  },
-                                  selectedItem: state.selectedCompany,
-                                  onLoad: () => context
-                                      .read<EmployeeBloc>()
-                                      .add(const EmployeeDetailEvent
-                                          .fetchCompanies()),
-                                  itemNameBuilder: (dynamic item) {
-                                    final companyName =
-                                        (item as Company).company;
-                                    return companyName;
-                                  },
-                                ),
-                              );
-                            },
-                          ),
-                          /* EmployeeSelectionStatus(
-                            onTap: (value) {
-                              context
-                                  .read<EmployeeBloc>()
-                                  .add(EmployeeDetailEvent.selectStatus(value));
-                            },
-                          ),*/
-                        ]),
-                      ],
+                            /* EmployeeSelectionStatus(
+                              onTap: (value) {
+                                context
+                                    .read<EmployeeBloc>()
+                                    .add(EmployeeDetailEvent.selectStatus(value));
+                              },
+                            ),*/
+                          ]),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
               BlocBuilder<EmployeeBloc, EmployeeDetailState>(
                 builder: (context, state) {
                   return Positioned(

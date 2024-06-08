@@ -1,9 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
+import 'package:trackify/core/extensions/date_time_extension.dart';
 import 'package:trackify/features/dashboard/app_bar_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:trackify/features/dashboard/presentation/dashboard_cubit.dart';
 import 'package:trackify/features/dashboard/presentation/widgets/bottom_bar_widget.dart';
 import 'package:trackify/features/dashboard/presentation/widgets/job_card_widget.dart';
+
+import '../../meeting/data/interview.dart';
+import '../../meeting/presentation/meeting_view.dart';
 
 class DashboardView extends StatelessWidget {
   final Widget? child;
@@ -27,54 +32,71 @@ class HRDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Jobs',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black.withOpacity(0.8),
+      body: BlocProvider(
+        create: (context) => DashboardCubit(),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '| Jobs',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black.withOpacity(0.8),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16.0),
-                SizedBox(
-                  height: 150,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5, // Number of jobs
-                    itemBuilder: (context, index) {
-                      return const JobCard(
-                        jobTitle: 'Software Engineer',
-                        company: 'Full time',
-                        positionsAvailable: 5,
-                        jobDepartment: 'Design',
-                        jobType: "",
-                      );
-                    },
+                  const SizedBox(height: 16.0),
+                  SizedBox(
+                    height: 150,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5, // Number of jobs
+                      itemBuilder: (context, index) {
+                        return const JobCard(
+                          jobTitle: 'Software Engineer',
+                          company: 'Full time',
+                          positionsAvailable: 5,
+                          jobDepartment: 'Design',
+                          jobType: "",
+                        );
+                      },
+                    ),
                   ),
-                ),
-                const SizedBox(height: 32.0),
-                Text(
-                  "Today\'s Interview Schedule",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black.withOpacity(0.8),
+                  const SizedBox(height: 32.0),
+                  Text(
+                    "| Plan for the day",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black.withOpacity(0.8),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16.0),
-                Container(
-                    child: const InterviewScheduleCard(
-                  interviewees: [],
-                )),
-                /*
+                  const SizedBox(height: 16.0),
+                  BlocBuilder<DashboardCubit, DashboardState>(
+                      builder: (context, state) {
+                    return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                            children: state.interviews
+                                .map(
+                                  (interview) => MeetingCard(
+                                    time: DateTime.fromMillisecondsSinceEpoch(interview.time!).formatTime(),
+                                    title: interview.title,
+                                    isInMeetingPage: false,
+                                    participantLength:
+                                        interview.employees.length,
+                                    description: interview.desc ?? "",
+                                  ),
+                                )
+                                .toList()));
+                  }),
+
+                  /*
                 const SizedBox(height: 16.0),
                 const Text(
                   'To-Do List',
@@ -93,19 +115,20 @@ class HRDashboard extends StatelessWidget {
                     },
                   ),
                 ),*/
-              ],
+                ],
+              ),
             ),
-          ),
-          const Align(
-              alignment: Alignment.bottomCenter, child: BottomBarWidget())
-        ],
+            const Align(
+                alignment: Alignment.bottomCenter, child: BottomBarWidget())
+          ],
+        ),
       ),
     );
   }
 }
 
 class InterviewScheduleCard extends StatelessWidget {
-  final List<String> interviewees;
+  final List<Interview> interviewees;
 
   const InterviewScheduleCard({super.key, required this.interviewees});
 
@@ -113,9 +136,7 @@ class InterviewScheduleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         width: 200,
         padding: const EdgeInsets.all(16.0),
@@ -131,7 +152,7 @@ class InterviewScheduleCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: interviewees
                   .map((interviewee) => Text(
-                        '- $interviewee',
+                        '- ${interviewee.title}',
                         style: const TextStyle(color: Colors.black),
                       ))
                   .toList(),

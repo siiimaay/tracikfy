@@ -9,7 +9,7 @@ class MeetingCard extends StatelessWidget {
   final String platform;
   final Color color;
 
-  MeetingCard({
+  MeetingCard({super.key,
     required this.time,
     required this.title,
     required this.description,

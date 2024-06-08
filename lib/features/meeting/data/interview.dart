@@ -9,7 +9,7 @@ part 'interview.g.dart';
 class Interview {
   final String title;
   final int? time;
-  final List<Employee> employees;
+  final List<dynamic> employees;
   final String category;
   final String? desc;
   final String? userId;

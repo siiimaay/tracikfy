@@ -4,7 +4,7 @@ import 'package:trackify/core/extensions/context_extension.dart';
 class MultiSelectDropdown<T> extends StatefulWidget {
   final List<T> items;
   final String hint;
-  final Function(List) onSelectedItemsChanged;
+  final Function(List<T>) onSelectedItemsChanged;
   final List<T> selectedItems;
   final Function(T item) itemNameBuilder;
   final Function()? onLoad;
@@ -22,10 +22,10 @@ class MultiSelectDropdown<T> extends StatefulWidget {
   });
 
   @override
-  _MultiSelectDropdownState createState() => _MultiSelectDropdownState<T>();
+  MultiSelectDropdownState createState() => MultiSelectDropdownState<T>();
 }
 
-class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
+class MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
   bool _isExpanded = false;
   List<T> _selectedItems = [];
   late final ScrollController scrollController;
@@ -162,12 +162,11 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                               itemCount: widget.items.length,
                               itemBuilder: (context, index) {
                                 final item = widget.items[index];
+                                print(item);
                                 return ListTile(
                                   title: Text(widget.itemNameBuilder(item)),
                                   trailing: _selectedItems.contains(item)
-                                      ? const Icon(
-                                          Icons.check_circle,
-                                        )
+                                      ? const Icon(Icons.check_circle)
                                       : null,
                                   onTap: () {
                                     setState(() {

@@ -14,29 +14,31 @@ class InputTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top: 8, bottom: 24),
-      child: TextFormField(
-        controller: controller,
-        cursorColor: Colors.grey,
-        obscureText: isObscure,
-        validator: (value) {
-          //return controller.text.isValidField();
-        },
-        focusNode: FocusNode(),
-        decoration: InputDecoration(
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(
-              color: Colors.indigo,
-              width: 1.5,
+    return GestureDetector(
+      child: Container(
+        padding: const EdgeInsets.only(top: 8, bottom: 24),
+        child: TextFormField(
+          controller: controller,
+          cursorColor: Colors.grey,
+          obscureText: isObscure,
+          validator: (value) {
+            //return controller.text.isValidField();
+          },
+          onTapOutside: (_) => Focus.of(context).unfocus(),
+          decoration: InputDecoration(
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: const BorderSide(
+                color: Colors.indigo,
+                width: 1.5,
+              ),
             ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(
-              color: Colors.grey.shade600,
-              width: 1.5,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(
+                color: Colors.grey.shade600,
+                width: 1.5,
+              ),
             ),
           ),
         ),

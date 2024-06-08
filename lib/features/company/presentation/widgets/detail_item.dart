@@ -71,6 +71,7 @@ class _DetailItemState extends State<DetailItem> {
                 scrollPadding: EdgeInsets.zero,
                 cursorColor: context.color.accountInfoColor,
                 backgroundCursorColor: Colors.transparent,
+               // onTapOutside: (_) => Focus.of(context).unfocus(),
               ),
             ),
           ],

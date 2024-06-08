@@ -1,3 +1,4 @@
+import 'package:trackify/core/injection/locator.dart';
 import 'package:trackify/features/auth/presentation/login_view.dart';
 import 'package:trackify/features/candidate/employee_view.dart';
 import 'package:trackify/features/company/presentation/company_view.dart';
@@ -19,7 +20,7 @@ class DrawerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<DashboardCubit>(
-      create: (context) => DashboardCubit(),
+      create: (context) =>DashboardCubit(),
       child: BlocBuilder<DashboardCubit, DashboardState>(
         builder: (context, state) {
           return Container(

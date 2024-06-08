@@ -5,6 +5,7 @@ import 'package:trackify/core/service/firestore_service.dart';
 import 'package:trackify/features/meeting/data/interview.dart';
 import 'package:uuid/uuid.dart';
 
+
 @Named("interview_firestore")
 @Injectable(as: FirestoreService)
 class MeetingStorageService implements FirestoreService {
@@ -22,24 +23,32 @@ class MeetingStorageService implements FirestoreService {
 
   @override
   Future<List<Interview>>? fetchRecords() {
-    List<Interview> employees = [];
+    List<Interview> interviews = [];
+    DateTime now = DateTime.now();
+    DateTime startOfDay = DateTime(now.year, now.month, now.day);
+    DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59, 999);
 
+    int startOfDayMillis = startOfDay.millisecondsSinceEpoch;
+    int endOfDayMillis = endOfDay.millisecondsSinceEpoch;
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) throw 'User id must not be null';
 
       return _collection
           .where('userId', isEqualTo: userId)
+          .where('time', isGreaterThanOrEqualTo: startOfDayMillis)
+          .where('time', isLessThanOrEqualTo: endOfDayMillis)
           .get()
           .then((querySnapshot) {
         for (var doc in querySnapshot.docs) {
           var data = doc.data();
-          employees.add(Interview.fromJson(data));
+          interviews.add(Interview.fromJson(data));
         }
 
-        return employees;
+        return interviews;
       });
     } catch (e) {
+      print(e);
       return null;
     }
   }
@@ -57,7 +66,9 @@ class MeetingStorageService implements FirestoreService {
     final interview = Interview(
       title: interviewData.title,
       time: interviewData.time,
-      employees: interviewData.employees,
+      category: interviewData.category,
+      desc: interviewData.desc,
+      employees: (interviewData.employees).map((e) => e.toJson()).toList(),
       userId: userId,
     ).toJson();
     await _firebaseFirestore.collection('interviews').doc(id).set(interview);

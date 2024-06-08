@@ -61,16 +61,16 @@ class _LoginViewState extends State<LoginView> {
               listener: (context, state) {
                 final event = state.loginEvent;
                 if (event is SuccessfulLoginEvent) {
-                 context.pop();
-                 context.go(DashboardView.route);
+                  context.pop();
+                  context.go(DashboardView.route);
                 } else if (event is FailedLoginEvent) {
-                 context.pop();
-                 TopSnackBarOverlay.showTopSnackbar(
-                   context: context,
-                   message: event.message,
-                   backgroundColor: Colors.red,
-                   icon: Icons.error,
-                 );
+                  context.pop();
+                  TopSnackBarOverlay.showTopSnackbar(
+                    context: context,
+                    message: event.message,
+                    backgroundColor: Colors.red,
+                    icon: Icons.error,
+                  );
                 } else if (event is LoadingEvent) {
                   showDialog(
                     context: context,
@@ -104,9 +104,7 @@ class _LoginViewState extends State<LoginView> {
                               ),
                             ),
                             const FormFieldLabel(label: 'Email'),
-                            InputTextField(
-                              controller: _emailController,
-                            ),
+                            InputTextField(controller: _emailController),
                             const FormFieldLabel(label: 'Password'),
                             InputTextField(
                               controller: _passwordController,

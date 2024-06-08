@@ -49,13 +49,17 @@ class MeetingViewState extends State<MeetingView> {
                   const Spacer(),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: context.color.appThemeMainColor.withOpacity(0.9),),
+                      backgroundColor:
+                          context.color.appThemeMainColor.withOpacity(0.9),
+                    ),
                     onPressed: () {
                       context.push(
                           "${MeetingView.route}/${AddMeetingScreen.route}");
                     },
-
-                    child: const Text('+ Add Meeting', style: TextStyle(color: Colors.white),),
+                    child: const Text(
+                      '+ Add Meeting',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -105,9 +109,6 @@ class MeetingViewState extends State<MeetingView> {
                           time: meeting.time,
                           title: meeting.title,
                           description: meeting.description,
-                          person: meeting.person,
-                          platform: meeting.platform,
-                          color:  Color(0xff8d9cf1),
                         );
                       },
                     );
@@ -128,51 +129,58 @@ class MeetingCard extends StatelessWidget {
   final String time;
   final String title;
   final String description;
-  final String person;
-  final String platform;
-  final Color color;
+  final bool isInMeetingPage;
+  final int participantLength;
 
   const MeetingCard({
     super.key,
     required this.time,
     required this.title,
     required this.description,
-    required this.person,
-    required this.platform,
-    required this.color,
+    this.isInMeetingPage = true,
+    this.participantLength = 0,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+        color: const Color(0xff8d9cf1).withOpacity(0.3),
+      )),
+      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            children: [
-              Container(
-                width: 8,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
+          if (isInMeetingPage)
+            Column(
+              children: [
+                Container(
+                  width: 8,
+                  height: 8,
+                  decoration: const BoxDecoration(
+                    color: Color(0xff8d9cf1),
+                    shape: BoxShape.circle,
+                  ),
                 ),
-              ),
-              Container(
-                width: 2,
-                height: 50,
-                color: Colors.grey,
-              ),
-            ],
-          ),
+                Container(
+                  width: 2,
+                  height: 50,
+                  color: Colors.grey,
+                ),
+              ],
+            ),
           const SizedBox(width: 8),
-          Expanded(
+          SizedBox(
+            width: 250,
+            height: 190,
             child: Card(
+              color: Colors.white,
+              elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              color: color.withOpacity(0.3),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -180,27 +188,30 @@ class MeetingCard extends StatelessWidget {
                   children: [
                     Text(time,
                         style: TextStyle(
-                            color: context.color.appThemeMainColor, fontWeight: FontWeight.bold,)),
+                          color: context.color.appThemeMainColor,
+                          fontWeight: FontWeight.bold,
+                        )),
                     const SizedBox(height: 8),
                     Text(title,
-                        style:  TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16,color: context.color.appThemeMainColor)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: context.color.appThemeMainColor)),
                     const SizedBox(height: 4),
-                    Text(description),
+                    if (description.isNotEmpty) Text(description),
                     const SizedBox(height: 4),
                     Row(
                       children: [
                         const Icon(Icons.person, size: 16),
                         const SizedBox(width: 4),
-                        Text(person),
+                        Text("$participantLength"),
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Row(
+                    const Row(
                       children: [
-                        const Icon(Icons.video_call, size: 16),
-                        const SizedBox(width: 4),
-                        Text(platform),
+                        Icon(Icons.video_call, size: 16),
+                        SizedBox(width: 4),
                       ],
                     ),
                   ],

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:trackify/core/injection/locator.dart';
 import 'package:trackify/features/meeting/data/interview.dart';
 import '../../../../core/service/firestore_service.dart';
-import '../../../candidate/data/employee.dart';
 import '../../../candidate/data/employee_repository.dart';
 import 'add_meeting_state.dart';
 
@@ -32,12 +31,15 @@ class AddMeetingCubit extends Cubit<AddMeetingState> {
 
   void fetchTeamMembers() async {
     final employees = await getIt.get<EmployeeRepository>().fetchEmployees();
-    emit(state.copyWith(
-        employees: (employees as List<Employee>).map((e) => e.name).toList()));
+    print(employees?.length);
+    emit(state.copyWith(employees: (employees)));
   }
 
   void updateTime(TimeOfDay time) {
-    emit(state.copyWith(selectedTime: time));
+    emit(state.copyWith(
+        selectedDate:
+            state.selectedDate.copyWith(hour: time.hour, minute: time.minute)));
+    print(state.selectedDate);
   }
 
   void updateTitle(String title) {
@@ -48,8 +50,8 @@ class AddMeetingCubit extends Cubit<AddMeetingState> {
     emit(state.copyWith(description: description));
   }
 
-  void updateEmployees(List<String?> employees) {
-    emit(state.copyWith(employees: employees ));
+  void updateEmployees(List<dynamic> employees) {
+    emit(state.copyWith(selectedEmployees: employees));
   }
 
   void updateCategory(String category) {
@@ -60,9 +62,9 @@ class AddMeetingCubit extends Cubit<AddMeetingState> {
     _interviewStorageService.saveRecord(
         data: Interview(
             title: state.title,
-            time: 1,
-            //todo: CHANGE THIS
-            employees: [],
+            time: state.selectedDate.millisecondsSinceEpoch,
+            category: state.selectedCategory,
+            employees: state.selectedEmployees,
             desc: state.description));
   }
 }
