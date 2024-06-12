@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
+import 'package:trackify/core/extensions/date_time_extension.dart';
 import 'package:trackify/features/meeting/presentation/add_meeting_screen.dart';
 
 import 'meeting_bloc/meeting_bloc.dart';
@@ -25,16 +26,20 @@ class MeetingViewState extends State<MeetingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text('Meetings'),
       ),
       body: BlocProvider(
-        create: (context) => MeetingBloc()..add(LoadMeetings()),
+        create: (context) =>
+        MeetingBloc()
+          ..add(LoadMeetings()),
         child: Column(
           children: [
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
+              const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
               child: Row(
                 children: [
                   const Icon(Icons.calendar_today, color: Color(0xff9CA5D9)),
@@ -50,7 +55,7 @@ class MeetingViewState extends State<MeetingView> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          context.color.appThemeMainColor.withOpacity(0.9),
+                      context.color.appThemeMainColor.withOpacity(0.9),
                     ),
                     onPressed: () {
                       context.push(
@@ -106,10 +111,14 @@ class MeetingViewState extends State<MeetingView> {
                       itemBuilder: (context, index) {
                         final meeting = meetings[index];
                         return MeetingCard(
-                          time: meeting.time,
+                          time: DateTime.fromMillisecondsSinceEpoch(
+                              meeting.time!).formatTime(),
                           title: meeting.title,
-                          description: meeting.description,
+                          isInMeetingPage: false,
+                          participantLength: meeting.employees.length,
+                          description: meeting.desc ?? "",
                         );
+
                       },
                     );
                   } else {
@@ -118,6 +127,7 @@ class MeetingViewState extends State<MeetingView> {
                 },
               ),
             ),
+            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -144,12 +154,7 @@ class MeetingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-        color: const Color(0xff8d9cf1).withOpacity(0.3),
-      )),
-      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -171,47 +176,69 @@ class MeetingCard extends StatelessWidget {
                 ),
               ],
             ),
-          const SizedBox(width: 8),
-          SizedBox(
-            width: 250,
-            height: 190,
-            child: Card(
-              color: Colors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12.withOpacity(0.09),
+                      offset: const Offset(0, 0),
+                      blurRadius: 2,
+                      spreadRadius: 2),
+                ],
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(time,
-                        style: TextStyle(
-                          color: context.color.appThemeMainColor,
-                          fontWeight: FontWeight.bold,
-                        )),
+                    Text(
+                      time,
+                      style: TextStyle(
+                        color: Theme
+                            .of(context)
+                            .primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
                     const SizedBox(height: 8),
-                    Text(title,
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Theme
+                            .of(context)
+                            .primaryColor,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    if (description.isNotEmpty)
+                      Text(
+                        description,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: context.color.appThemeMainColor)),
-                    const SizedBox(height: 4),
-                    if (description.isNotEmpty) Text(description),
-                    const SizedBox(height: 4),
+                          color: Colors.grey[700],
+                          fontSize: 14,
+                        ),
+                      ),
+                    const SizedBox(height: 12),
                     Row(
                       children: [
-                        const Icon(Icons.person, size: 16),
-                        const SizedBox(width: 4),
-                        Text("$participantLength"),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    const Row(
-                      children: [
-                        Icon(Icons.video_call, size: 16),
-                        SizedBox(width: 4),
+                        const Icon(Icons.person, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          "$participantLength",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(Icons.video_call, size: 20),
                       ],
                     ),
                   ],

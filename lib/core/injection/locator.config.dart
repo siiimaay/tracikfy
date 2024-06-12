@@ -22,13 +22,13 @@ import 'package:trackify/features/candidate/domain/employee_storage_service.dart
 import 'package:trackify/features/company/data/repository/company_repository.dart'
     as _i4;
 import 'package:trackify/features/company/domain/comp_storage_service.dart'
-    as _i9;
+    as _i10;
 import 'package:trackify/features/company/presentation/company_detail_bloc/company_detail_bloc.dart'
     as _i3;
 import 'package:trackify/features/meeting/data/repository/interview_repository.dart'
     as _i13;
 import 'package:trackify/features/meeting/domain/meeting_storage_service.dart'
-    as _i10;
+    as _i9;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -46,16 +46,16 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i5.EmployeeBloc>(() => _i5.EmployeeBloc());
     gh.factory<_i6.EmployeeRepository>(() => _i6.EmployeeRepository());
     gh.factory<_i7.FirestoreService<dynamic>>(
-      () => _i8.CompanyStorageService(),
+      () => _i8.EmployeeStorageService(),
       instanceName: 'employee_firestore',
     );
     gh.factory<_i7.FirestoreService<dynamic>>(
-      () => _i9.CompanyStorageService(),
-      instanceName: 'company_firestore',
+      () => _i9.MeetingStorageService(),
+      instanceName: 'interview_firestore',
     );
     gh.factory<_i7.FirestoreService<dynamic>>(
-      () => _i10.MeetingStorageService(),
-      instanceName: 'interview_firestore',
+      () => _i10.CompanyStorageService(),
+      instanceName: 'company_firestore',
     );
     gh.factory<_i11.IAuthService>(() => _i12.LoginService());
     gh.factory<_i13.InterviewRepository>(() => _i13.InterviewRepository());

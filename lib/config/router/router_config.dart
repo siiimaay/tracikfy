@@ -14,6 +14,7 @@ import 'package:trackify/features/meeting/presentation/meeting_view.dart';
 import '../../features/auth/presentation/sign_up_view.dart';
 import '../../features/candidate/data/employee.dart';
 import '../../features/candidate/data/employee_ui_model.dart';
+import '../../features/company/data/company.dart';
 import '../../features/company/presentation/widgets/company_details_view.dart';
 
 class AppRouterConfig {
@@ -40,7 +41,6 @@ class AppRouterConfig {
           builder: (BuildContext context, GoRouterState state) =>
               const LoginView(),
         ),
-
         GoRoute(
           path: MeetingView.route,
           routes: [
@@ -102,7 +102,11 @@ class AppRouterConfig {
                     GoRoute(
                         path: CompanyDetailView.route,
                         builder: (context, state) {
-                          return const CompanyDetailView();
+                          final companyDetail = state.extra as Company;
+
+                          return CompanyDetailView(
+                            company: companyDetail,
+                          );
                         }),
                     GoRoute(
                       path: NewCompanyDetailForm.route,

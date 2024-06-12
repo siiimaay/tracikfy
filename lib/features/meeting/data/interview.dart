@@ -13,14 +13,16 @@ class Interview {
   final String category;
   final String? desc;
   final String? userId;
+  final int? createdAt;
 
-  Interview({
+  Interview( {
     required this.title,
     required this.time,
     required this.employees,
      this.userId,
     this.category = "",
     this.desc,
+    this.createdAt,
   });
 
   factory Interview.fromJson(Map<String, dynamic> json) =>

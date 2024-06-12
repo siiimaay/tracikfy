@@ -2,7 +2,8 @@ enum EmployeeStatus {
   active(name: "Active"),
   deactivated(name: "DEACTIVATED"),
   interviewing(name: "Interviewing"),
-  onboarding(name: "Onboarding");
+  onboarding(name: "Onboarding"),
+  rejected(name: "Rejected");
   final String name;
   const EmployeeStatus({required this.name});
 
@@ -13,6 +14,6 @@ enum EmployeeStatus {
         return status;
       }
     }
-    return null; // or throw an exception if preferred
+    return null;
   }
 }

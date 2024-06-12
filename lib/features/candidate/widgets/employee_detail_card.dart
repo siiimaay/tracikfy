@@ -7,6 +7,7 @@ import 'package:trackify/features/candidate/widgets/employee_detail_widget.dart'
 import 'package:trackify/features/candidate/widgets/existing_employee_detail_view.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../../company/data/company.dart';
 import '../data/employee.dart';
 import 'employee_label_widget.dart';
 
@@ -16,7 +17,8 @@ class EmployeeDetailCard extends StatelessWidget {
   final String title;
   final String department;
   final String status;
-  final String? companyId;
+  final Company? company;
+  final String? id;
 
   const EmployeeDetailCard({
     super.key,
@@ -25,7 +27,7 @@ class EmployeeDetailCard extends StatelessWidget {
     required this.title,
     required this.department,
     required this.status,
-    required this.companyId,
+    required this.company, this.id,
   });
 
   @override
@@ -49,8 +51,9 @@ class EmployeeDetailCard extends StatelessWidget {
                 "${CandidateView.route}/${ExistingEmployeeDetailView.route}",
                 extra: EmployeeData(
                   name: name,
+                  id: id,
                   status: status,
-                  companyId: companyId,
+                  company: company,
                   department: department,
                 ));
           },

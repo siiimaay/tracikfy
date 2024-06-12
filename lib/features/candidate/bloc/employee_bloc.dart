@@ -41,7 +41,6 @@ class EmployeeBloc extends Bloc<EmployeeDetailEvent, EmployeeDetailState> {
                 (value) => emit(state.copyWith(
                     companies: value as List<Company>, isLoading: false)));
           } catch (e) {
-            // Handle any errors here
             emit(state.copyWith(isLoading: false));
           }
         },
@@ -63,6 +62,14 @@ class EmployeeBloc extends Bloc<EmployeeDetailEvent, EmployeeDetailState> {
           emit(state.copyWith(selectedDepartment: event.department));
         }, selectStatus: (event) {
           emit(state.copyWith(employeeStatus: event.status));
+      }, listenEmployees: (_ListenEmployees value) {
+
+      }, updateEmployee: (event) async {
+            print("is this even here ${(event.data as Employee).id}");
+            await getIt.get<EmployeeRepository>().updateEmployee(
+                (event.data as Employee).id, event.data as Employee);
+
+
       },
       );
     });

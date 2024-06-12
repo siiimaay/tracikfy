@@ -18,8 +18,11 @@ class $AssetsAnimationsGen {
   /// File path: assets/animations/login_timer.json
   String get loginTimer => 'assets/animations/login_timer.json';
 
+  /// File path: assets/animations/rocket.json
+  String get rocket => 'assets/animations/rocket.json';
+
   /// List of all assets
-  List<String> get values => [loadingTimer, loginTimer];
+  List<String> get values => [loadingTimer, loginTimer, rocket];
 }
 
 class $AssetsImagesGen {

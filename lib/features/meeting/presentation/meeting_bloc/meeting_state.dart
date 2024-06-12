@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../data/interview.dart';
 import '../../data/meeting.dart';
 
 abstract class MeetingState extends Equatable {
@@ -11,7 +12,7 @@ abstract class MeetingState extends Equatable {
 class MeetingLoadInProgress extends MeetingState {}
 
 class MeetingLoadSuccess extends MeetingState {
-  final List<Meeting> meetings;
+  final List<Interview> meetings;
 
   const MeetingLoadSuccess(this.meetings);
 

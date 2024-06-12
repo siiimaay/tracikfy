@@ -22,6 +22,9 @@ class DashboardCubit extends Cubit<DashboardState> {
   void fetchInterviews() async {
     final interviews =
         await _interviewStorageService.fetchRecords() as List<Interview>;
-    emit(state.copyWith(interviews: interviews));
+    if(!isClosed){
+      emit(state.copyWith(interviews: interviews));
+
+    }
   }
 }

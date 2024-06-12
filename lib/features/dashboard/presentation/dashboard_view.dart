@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:trackify/core/extensions/date_time_extension.dart';
 import 'package:trackify/features/dashboard/app_bar_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -80,20 +79,25 @@ class HRDashboard extends StatelessWidget {
                   BlocBuilder<DashboardCubit, DashboardState>(
                       builder: (context, state) {
                     return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                            children: state.interviews
-                                .map(
-                                  (interview) => MeetingCard(
-                                    time: DateTime.fromMillisecondsSinceEpoch(interview.time!).formatTime(),
-                                    title: interview.title,
-                                    isInMeetingPage: false,
-                                    participantLength:
-                                        interview.employees.length,
-                                    description: interview.desc ?? "",
-                                  ),
-                                )
-                                .toList()));
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: state.interviews
+                            .map(
+                              (interview) => SizedBox(
+                            width: 300,
+                            child: MeetingCard(
+                              time: DateTime.fromMillisecondsSinceEpoch(interview.time!).formatTime(),
+                              title: interview.title,
+                              isInMeetingPage: false,
+                              participantLength: interview.employees.length,
+                              description: interview.desc ?? "",
+                            ),
+                          ),
+                        )
+                            .toList(),
+                      ),
+                    );
                   }),
 
                   /*
@@ -135,7 +139,7 @@ class InterviewScheduleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,
+      elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         width: 200,

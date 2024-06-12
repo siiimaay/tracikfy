@@ -24,7 +24,7 @@ class InputTextField extends StatelessWidget {
           validator: (value) {
             //return controller.text.isValidField();
           },
-          onTapOutside: (_) => Focus.of(context).unfocus(),
+         // onTapOutside: (_) => Focus.of(context).unfocus(),
           decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),

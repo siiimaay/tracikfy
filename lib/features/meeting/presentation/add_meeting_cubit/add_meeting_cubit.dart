@@ -61,10 +61,12 @@ class AddMeetingCubit extends Cubit<AddMeetingState> {
   void saveMeeting() {
     _interviewStorageService.saveRecord(
         data: Interview(
-            title: state.title,
-            time: state.selectedDate.millisecondsSinceEpoch,
-            category: state.selectedCategory,
-            employees: state.selectedEmployees,
-            desc: state.description));
+      title: state.title,
+      time: state.selectedDate.millisecondsSinceEpoch,
+      category: state.selectedCategory,
+      employees: state.selectedEmployees,
+      desc: state.description,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+    ));
   }
 }

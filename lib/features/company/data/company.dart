@@ -9,6 +9,7 @@ class Company {
   final String company;
   final String workArea;
   final String phoneNo;
+  final int? createdAt;
 
   Company({
     this.id,
@@ -16,6 +17,7 @@ class Company {
     this.userId,
     required this.workArea,
     required this.phoneNo,
+    this.createdAt,
   });
 
   factory Company.fromJson(Map<String, dynamic> json) =>

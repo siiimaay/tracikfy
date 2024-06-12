@@ -54,7 +54,7 @@ class MeetingStorageService implements FirestoreService {
   }
 
   @override
-  Future<void> updateRecord() {
+  Future<void> updateRecord({String? id, required dynamic data}) {
     throw UnimplementedError();
   }
 
@@ -72,5 +72,11 @@ class MeetingStorageService implements FirestoreService {
       userId: userId,
     ).toJson();
     await _firebaseFirestore.collection('interviews').doc(id).set(interview);
+  }
+
+  @override
+  Stream<List>? listenFetchRecords() {
+    // TODO: implement listenFetchRecords
+    throw UnimplementedError();
   }
 }

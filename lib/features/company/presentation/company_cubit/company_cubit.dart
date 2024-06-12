@@ -16,4 +16,9 @@ class CompanyCubit extends Cubit<CompanyState> {
         await getIt.get<CompanyRepository>().fetchCompanies() as List<Company>;
     emit(state.copyWith(companies: companies, isLoading: false));
   }
+  void updateCompany(Company company) async {
+    emit(state.copyWith(isLoading: true));
+    await getIt.get<CompanyRepository>().updateCompany(company);
+    emit(state.copyWith( isLoading: false));
+  }
 }

@@ -1,12 +1,16 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
 
+import '../bloc/employee_bloc.dart';
 import '../data/employee_status.dart';
 
 class ButtonSelectionPage extends StatefulWidget {
   final EmployeeStatus? selectedStatus;
+  final Function? onTap;
 
-  const ButtonSelectionPage({super.key, this.selectedStatus});
+  const ButtonSelectionPage({super.key, this.selectedStatus, this.onTap});
 
   @override
   ButtonSelectionPageState createState() => ButtonSelectionPageState();
@@ -19,10 +23,13 @@ class ButtonSelectionPageState extends State<ButtonSelectionPage> {
     setState(() {
       _selectedIndex = status;
     });
+    widget.onTap?.call();
+    context
+        .read<EmployeeBloc>()
+        .add(EmployeeDetailEvent.selectStatus(_selectedIndex?.name.toString() ?? ""));
   }
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _selectedIndex = widget.selectedStatus;
   }

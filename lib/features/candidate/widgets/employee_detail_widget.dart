@@ -7,6 +7,7 @@ import 'package:trackify/features/candidate/bloc/employee_bloc.dart';
 import 'package:trackify/features/candidate/widgets/employee_select_status_widget.dart';
 import 'package:trackify/features/company/presentation/widgets/company_detail_section.dart';
 import 'package:trackify/features/company/presentation/widgets/detail_item.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../global/multi_select_dropdown.dart';
 import '../../../global/single_select_dropdown.dart';
@@ -35,11 +36,6 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
       backgroundColor: context.color.settingsBackColor,
       appBar: AppBar(
         title: const Text("Employee Details"),
-        actions: const [
-          /* PopupMenuButton(itemBuilder: (BuildContext context) {
-            return PopupMenuItem(child: Text("hy"),);
-          },)*/
-        ],
         surfaceTintColor: context.color.settingsBackColor,
         shadowColor: context.color.settingsBackColor,
       ),
@@ -48,13 +44,10 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 8),
           child: Stack(
-            alignment: Alignment.center,
+            alignment: Alignment.bottomCenter,
             children: [
               Form(
-
-                child: KeyboardVisibilityBuilder(
-
-                    builder: (context, isVisible) {
+                child: KeyboardVisibilityBuilder(builder: (context, isVisible) {
                   return SingleChildScrollView(
                     physics: const ClampingScrollPhysics(),
                     child: SizedBox(
@@ -69,23 +62,25 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                                   maxRadius: 75,
                                   backgroundColor: Colors.grey,
                                 )),*/
-                          if(!isVisible)
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text(
-                              "| Add new Employee",
-                              style: context.textStyle.detailText.copyWith(
-                                  color: context.color.appThemeMainColor,
-                                  fontSize: 20),
+                          if (!isVisible)
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                "| Add new Employee",
+                                style: context.textStyle.detailText.copyWith(
+                                    color: context.color.appThemeMainColor,
+                                    fontSize: 20),
+                              ),
                             ),
-                          ),
                           const SizedBox(height: 8),
-                          const ButtonSelectionPage(),
+                           ButtonSelectionPage(onTap: (){
+
+                          },),
                           const SizedBox(height: 16),
                           CompanyDetailSection(settingsItems: [
                             DetailItem(
                               text: "Employee name",
-                              valueText: "Value",
+                              valueText: "",
                               prefixIcon: Icon(
                                 Icons.account_balance_outlined,
                                 color: const Color(0xff09093b).withOpacity(0.7),
@@ -94,9 +89,18 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                             ),
                             DetailItem(
                               text: "Title",
-                              valueText: "Value",
+                              valueText: "",
                               prefixIcon: Icon(
                                 Icons.account_balance_outlined,
+                                color: const Color(0xff09093b).withOpacity(0.7),
+                              ),
+                              textEditingController: employeeNameController,
+                            ),
+                            DetailItem(
+                              text: "Social Media",
+                              valueText: "",
+                              prefixIcon: Icon(
+                                Icons.share,
                                 color: const Color(0xff09093b).withOpacity(0.7),
                               ),
                               textEditingController: employeeNameController,
@@ -171,21 +175,30 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                   );
                 }),
               ),
+
               BlocBuilder<EmployeeBloc, EmployeeDetailState>(
                 builder: (context, state) {
-                  return Positioned(
-                      bottom: 0,
+                  return Align(
+                     alignment: Alignment.bottomCenter,
                       child: SubmitButton(
-                        buttonText: 'Update',
+                        buttonText: 'Save',
                         onPressed: () {
-                          context.read<EmployeeBloc>().add(
-                              EmployeeDetailEvent.save(Employee(
-                                  name: employeeNameController.text,
-                                  status: state.employeeStatus.toString(),
-                                  department: state.selectedDepartment,
-                                  companyId: state.selectedCompany?.id)));
+                          if (state.selectedCompany != null &&
+                              state.selectedDepartment.isNotEmpty &&
+                              employeeNameController.text.isNotEmpty) {
+                            context.read<EmployeeBloc>().add(
+                                EmployeeDetailEvent.save(Employee(
+                                    id: const Uuid().v4(),
+                                    name: employeeNameController.text,
+                                    status: state.employeeStatus.toString(),
+                                    department: state.selectedDepartment,
+                                    company: state.selectedCompany?.toJson())));
+                          }
+
                         },
-                        color: const Color(0xff09093b),
+                        color: (state.selectedCompany != null &&
+                            state.selectedDepartment.isNotEmpty &&
+                            employeeNameController.text.isNotEmpty) ?   const Color(0xff09093b) : const Color(0xffD3D3D3)
                       ));
                 },
               )
