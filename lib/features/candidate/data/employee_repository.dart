@@ -21,7 +21,7 @@ class EmployeeRepository {
     return await _employeeStorageService.fetchRecords();
   }
 
-  Future<void> deleteEmployee(String id) async {
+  Future<void> deleteEmployee(String? id) async {
     await _employeeStorageService.deleteRecord(id: id);
   }
   Future<void> updateEmployee(String? id, Employee updatedEmployee) async {

@@ -36,8 +36,8 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
       backgroundColor: context.color.settingsBackColor,
       appBar: AppBar(
         title: const Text("Employee Details"),
-        surfaceTintColor: context.color.settingsBackColor,
-        shadowColor: context.color.settingsBackColor,
+        surfaceTintColor: Colors.white,
+        backgroundColor: context.color.settingsBackColor,
       ),
       body: BlocProvider(
         create: (context) => EmployeeBloc(),
@@ -73,9 +73,9 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                               ),
                             ),
                           const SizedBox(height: 8),
-                           ButtonSelectionPage(onTap: (){
-
-                          },),
+                          ButtonSelectionPage(
+                            onTap: () {},
+                          ),
                           const SizedBox(height: 16),
                           CompanyDetailSection(settingsItems: [
                             DetailItem(
@@ -175,31 +175,33 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                   );
                 }),
               ),
-
               BlocBuilder<EmployeeBloc, EmployeeDetailState>(
                 builder: (context, state) {
                   return Align(
-                     alignment: Alignment.bottomCenter,
+                      alignment: Alignment.bottomCenter,
                       child: SubmitButton(
-                        buttonText: 'Save',
-                        onPressed: () {
-                          if (state.selectedCompany != null &&
-                              state.selectedDepartment.isNotEmpty &&
-                              employeeNameController.text.isNotEmpty) {
-                            context.read<EmployeeBloc>().add(
-                                EmployeeDetailEvent.save(Employee(
+                          buttonText: 'Save',
+                          onPressed: () {
+                            if (state.selectedCompany != null &&
+                                state.selectedDepartment.isNotEmpty &&
+                                employeeNameController.text.isNotEmpty) {
+                              context
+                                  .read<EmployeeBloc>()
+                                  .add(EmployeeDetailEvent.save(Employee(
                                     id: const Uuid().v4(),
                                     name: employeeNameController.text,
                                     status: state.employeeStatus.toString(),
                                     department: state.selectedDepartment,
-                                    company: state.selectedCompany?.toJson())));
-                          }
-
-                        },
-                        color: (state.selectedCompany != null &&
-                            state.selectedDepartment.isNotEmpty &&
-                            employeeNameController.text.isNotEmpty) ?   const Color(0xff09093b) : const Color(0xffD3D3D3)
-                      ));
+                                    company: state.selectedCompany?.toJson(),
+                                    title: workAreaController.text,
+                                  )));
+                            }
+                          },
+                          color: (state.selectedCompany != null &&
+                                  state.selectedDepartment.isNotEmpty &&
+                                  employeeNameController.text.isNotEmpty)
+                              ? const Color(0xff09093b)
+                              : const Color(0xffD3D3D3)));
                 },
               )
             ],

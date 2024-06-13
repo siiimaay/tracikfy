@@ -28,7 +28,6 @@ class EmployeeBloc extends Bloc<EmployeeDetailEvent, EmployeeDetailState> {
                 .then((_) {
               emit(state.copyWith(isLoading: false));
             });
-
           } catch (e) {
             // Handle any errors here
             emit(state.copyWith(isLoading: false));
@@ -39,7 +38,7 @@ class EmployeeBloc extends Bloc<EmployeeDetailEvent, EmployeeDetailState> {
           try {
             await getIt.get<CompanyRepository>().fetchCompanies().then(
                 (value) => emit(state.copyWith(
-                    companies: value as List<Company>, isLoading: false)));
+                    companies: (value as List<Company>).where((element) => element.isDeactivated != true).toList(), isLoading: false)));
           } catch (e) {
             emit(state.copyWith(isLoading: false));
           }
@@ -47,8 +46,8 @@ class EmployeeBloc extends Bloc<EmployeeDetailEvent, EmployeeDetailState> {
         fetchEmployees: (value) async {
           emit(state.copyWith(isLoading: true));
           try {
-          await getIt.get<EmployeeRepository>().fetchEmployees().then(
-                    (value) => emit(state.copyWith(
+            await getIt.get<EmployeeRepository>().fetchEmployees().then(
+                (value) => emit(state.copyWith(
                     employees: value as List<Employee>, isLoading: false)));
           } catch (e) {
             print(e);
@@ -60,17 +59,21 @@ class EmployeeBloc extends Bloc<EmployeeDetailEvent, EmployeeDetailState> {
         },
         selectDepartment: (event) {
           emit(state.copyWith(selectedDepartment: event.department));
-        }, selectStatus: (event) {
+        },
+        selectStatus: (event) {
           emit(state.copyWith(employeeStatus: event.status));
-      }, listenEmployees: (_ListenEmployees value) {
-
-      }, updateEmployee: (event) async {
-            print("is this even here ${(event.data as Employee).id}");
-            await getIt.get<EmployeeRepository>().updateEmployee(
-                (event.data as Employee).id, event.data as Employee);
-
-
-      },
+        },
+        listenEmployees: (_ListenEmployees value) {},
+        updateEmployee: (event) async {
+          print("is this even here ${(event.data as Employee).id}");
+          await getIt.get<EmployeeRepository>().updateEmployee(
+              (event.data as Employee).id, event.data as Employee);
+        },
+        deleteEmployee: (event) async {
+          await getIt
+              .get<EmployeeRepository>()
+              .deleteEmployee((event.data as Employee).id);
+        },
       );
     });
   }

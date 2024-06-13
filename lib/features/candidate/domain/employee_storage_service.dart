@@ -50,11 +50,10 @@ class EmployeeStorageService implements FirestoreService {
     try {
       // Extract the id from the data object
       final documentId = (data as Employee).id;
-      print('Data ID: $documentId');
-      print((data as Employee).company);
 
       // Query the collection to find the document with the matching id field
-      QuerySnapshot querySnapshot = await _collection.where('id', isEqualTo: documentId).get();
+      QuerySnapshot querySnapshot =
+          await _collection.where('id', isEqualTo: documentId).get();
       if (querySnapshot.docs.isNotEmpty) {
         // Assuming there's only one document with the matching id
         DocumentReference docRef = querySnapshot.docs.first.reference;
@@ -73,14 +72,12 @@ class EmployeeStorageService implements FirestoreService {
     }
   }
 
-
-
   @override
   Future<void> saveRecord({required dynamic data}) async {
     final id = const Uuid().v4();
     final employeeData = (data as Employee);
     final userId = FirebaseAuth.instance.currentUser?.uid;
-  print(id);
+    print(id);
     try {
       final employee = Employee(
         id: id,
@@ -90,6 +87,7 @@ class EmployeeStorageService implements FirestoreService {
         department: employeeData.department,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         company: employeeData.company,
+        title: employeeData.title,
       ).toJson();
       await _firebaseFirestore.collection('employee').doc(id).set(employee);
     } catch (e) {

@@ -6,6 +6,9 @@ import 'package:trackify/core/extensions/context_extension.dart';
 import 'package:trackify/core/extensions/date_time_extension.dart';
 import 'package:trackify/features/meeting/presentation/add_meeting_screen.dart';
 
+import '../../../core/injection/locator.dart';
+import '../../../core/service/firestore_service.dart';
+import '../data/interview.dart';
 import 'meeting_bloc/meeting_bloc.dart';
 import 'meeting_bloc/meeting_event.dart';
 import 'meeting_bloc/meeting_state.dart';
@@ -32,104 +35,111 @@ class MeetingViewState extends State<MeetingView> {
         title: const Text('Meetings'),
       ),
       body: BlocProvider(
-        create: (context) =>
-        MeetingBloc()
-          ..add(LoadMeetings()),
-        child: Column(
-          children: [
-            Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
-              child: Row(
+        create: (context) => MeetingBloc()..add(LoadMeetings()),
+        child: StreamBuilder<Object>(
+            stream: getIt
+                .get<FirestoreService>(instanceName: "interview_firestore")
+                .listenFetchRecords(),
+            builder: (context, snapshot) {
+              return Column(
                 children: [
-                  const Icon(Icons.calendar_today, color: Color(0xff9CA5D9)),
-                  const SizedBox(width: 8),
-                  Text(
-                    '30 May - 2023',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: context.color.appThemeMainColor),
-                  ),
-                  const Spacer(),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                      context.color.appThemeMainColor.withOpacity(0.9),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32.0, vertical: 8.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.calendar_today,
+                            color: Color(0xff9CA5D9)),
+                        const SizedBox(width: 8),
+                        Text(
+                          '30 May - 2023',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: context.color.appThemeMainColor),
+                        ),
+                        const Spacer(),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: context.color.appThemeMainColor
+                                .withOpacity(0.9),
+                          ),
+                          onPressed: () {
+                            context.push(
+                                "${MeetingView.route}/${AddMeetingScreen.route}");
+                          },
+                          child: const Text(
+                            '+ Add Meeting',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
                     ),
-                    onPressed: () {
-                      context.push(
-                          "${MeetingView.route}/${AddMeetingScreen.route}");
-                    },
-                    child: const Text(
-                      '+ Add Meeting',
-                      style: TextStyle(color: Colors.white),
-                    ),
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: TableCalendar(
-                firstDay: DateTime.utc(2020, 10, 16),
-                lastDay: DateTime.utc(2030, 3, 14),
-                focusedDay: _focusedDay,
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                },
-                calendarStyle: CalendarStyle(
-                  todayDecoration: BoxDecoration(
-                    color: context.color.appThemeMainColor,
-                    shape: BoxShape.circle,
-                  ),
-                  selectedDecoration: const BoxDecoration(
-                    color: Color(0xff9CA5D9),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                headerStyle: const HeaderStyle(
-                  formatButtonVisible: false,
-                ),
-              ),
-            ),
-            Expanded(
-              child: BlocBuilder<MeetingBloc, MeetingState>(
-                builder: (context, state) {
-                  if (state is MeetingLoadInProgress) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is MeetingLoadSuccess) {
-                    final meetings = state.meetings;
-                    return ListView.builder(
-                      itemCount: meetings.length,
-                      itemBuilder: (context, index) {
-                        final meeting = meetings[index];
-                        return MeetingCard(
-                          time: DateTime.fromMillisecondsSinceEpoch(
-                              meeting.time!).formatTime(),
-                          title: meeting.title,
-                          isInMeetingPage: false,
-                          participantLength: meeting.employees.length,
-                          description: meeting.desc ?? "",
-                        );
-
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: TableCalendar(
+                      firstDay: DateTime.utc(2020, 10, 16),
+                      lastDay: DateTime.utc(2030, 3, 14),
+                      focusedDay: _focusedDay,
+                      selectedDayPredicate: (day) {
+                        return isSameDay(_selectedDay, day);
                       },
-                    );
-                  } else {
-                    return const Center(child: Text('Failed to load meetings'));
-                  }
-                },
-              ),
-            ),
-            const SizedBox(height: 30),
-          ],
-        ),
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          _selectedDay = selectedDay;
+                          _focusedDay = focusedDay;
+                        });
+                      },
+                      calendarStyle: CalendarStyle(
+                        todayDecoration: BoxDecoration(
+                          color: context.color.appThemeMainColor,
+                          shape: BoxShape.circle,
+                        ),
+                        selectedDecoration: const BoxDecoration(
+                          color: Color(0xff9CA5D9),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      headerStyle: const HeaderStyle(
+                        formatButtonVisible: false,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: BlocBuilder<MeetingBloc, MeetingState>(
+                      builder: (context, state) {
+                        if (state is MeetingLoadInProgress) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.data != null) {
+                          final meetings = snapshot.data as List<Interview>;
+                          return ListView.builder(
+                            itemCount: meetings.length ?? 0,
+                            itemBuilder: (context, index) {
+                              final meeting = meetings?[index];
+                              return MeetingCard(
+                                time:  meeting?.time != null ? DateTime.fromMillisecondsSinceEpoch(
+                                    meeting!.time! )
+                                    .formatTime() : "",
+                                title: meeting?.title ?? "Default",
+                                isInMeetingPage: false,
+                                participantLength: meeting?.employees.length ?? 0,
+                                description: meeting?.desc ?? "",
+                              );
+                            },
+                          );
+                        } else {
+                          return const Center(
+                              child: Text('Failed to load meetings'));
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                ],
+              );
+            }),
       ),
     );
   }
@@ -198,9 +208,7 @@ class MeetingCard extends StatelessWidget {
                     Text(
                       time,
                       style: TextStyle(
-                        color: Theme
-                            .of(context)
-                            .primaryColor,
+                        color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -211,9 +219,7 @@ class MeetingCard extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Theme
-                            .of(context)
-                            .primaryColor,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                     const SizedBox(height: 8),

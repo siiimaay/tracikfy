@@ -47,10 +47,9 @@ class _EmployeesViewState extends State<EmployeesView> {
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if ((snapshot.data!).isNotEmpty) {
-                snapshot.data?.forEach((element) {print(element.status);});
                 final employeeList = snapshot.data
                     ?.where((element) =>
-                element.status == EmployeeStatus.active.name || element.status == EmployeeStatus.onboarding.name)
+                element.status == EmployeeStatus.active.name || element.status == EmployeeStatus.onboarding.name || element.status == "Deactivated")
                     .toList();
                 final candidates = snapshot.data
                     ?.where((element) =>
@@ -61,30 +60,32 @@ class _EmployeesViewState extends State<EmployeesView> {
                 element.status == "Rejected")
                     .toList();
 
-                print("Rejected employees count: ${rejected?.length ?? 0}");
-
                 return Container(
+                  height: MediaQuery.of(context).size.height,
                   color: context.color.settingsBackColor,
                   padding: const EdgeInsets.all(8.0),
                   child: widget.isCandidate
-                      ? Column(
-                    children: [
-                      _buildExpandableSection(
-                        context,
-                        title: "Active Candidates",
-                        employees: candidates,
-                        state: state,
-                        isCandidate: true,
-                      ),
-                      const SizedBox(height: 16.0),
-                      _buildExpandableSection(
-                        context,
-                        title: "Rejected Employees",
-                        employees: rejected,
-                        state: state,
-                        isCandidate: true,
-                      ),
-                    ],
+                      ? SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildExpandableSection(
+                          context,
+                          title: "Active Candidates",
+                          employees: candidates,
+                          state: state,
+                          isCandidate: true,
+                        ),
+                        const SizedBox(height: 16.0),
+                        _buildExpandableSection(
+                          context,
+                          title: "Rejected Employees",
+                          employees: rejected,
+                          state: state,
+                          isCandidate: true,
+                        ),
+                      ],
+                    ),
                   )
                       : ListView.builder(
                     itemCount: employeeList?.length,
@@ -118,6 +119,7 @@ class _EmployeesViewState extends State<EmployeesView> {
         required List<Employee>? employees,
         required EmployeeDetailState state,
         required bool isCandidate}) {
+
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
@@ -148,10 +150,10 @@ class _EmployeesViewState extends State<EmployeesView> {
                         userId: employee.userId,
                         status: EmployeeStatus.rejected.name,
                         department: employee.department,
-                        company: employee.company)));
+                        company: employee.company, title: employee.title)));
               }),
               children: [
-                if (isCandidate)
+                if (isCandidate && employee.status != "Rejected")
                   SlidableAction(
                     onPressed: (context) async {
                       context.read<EmployeeBloc>().add(
@@ -161,7 +163,7 @@ class _EmployeesViewState extends State<EmployeesView> {
                               userId: employee.userId,
                               status: EmployeeStatus.rejected.name,
                               department: state.selectedDepartment,
-                              company: state.selectedCompany?.toJson())));
+                              company: state.selectedCompany?.toJson(), title: employee.title)));
                     },
                     backgroundColor: const Color(0xFFFE4A49),
                     foregroundColor: Colors.white,
@@ -176,6 +178,7 @@ class _EmployeesViewState extends State<EmployeesView> {
               id: employee.id,
               department: employee.department.firstOrNull ?? "Default",
               status: employee.status,
+              userId: employee.userId,
               company: employee.company != null
                   ? Company.fromJson(employee.company!)
                   : null,

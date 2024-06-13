@@ -27,7 +27,7 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
           unselectedItemColor: Colors.white,
           onTap: _onTap,
           items: const [
-            BottomNavigationBarItem(label: "Job", icon: Icon(Icons.add)),
+            //BottomNavigationBarItem(label: "Job", icon: Icon(Icons.add)),
             BottomNavigationBarItem(
               label: "Interviews",
               icon: Icon(Icons.schedule),
@@ -42,12 +42,11 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
 
   _onTap(int tabIndex) {
     switch (tabIndex) {
+
       case 0:
-        break;
-      case 1:
         context.push(MeetingView.route);
         break;
-      case 2:
+      case 1:
         break;
     }
     setState(() {

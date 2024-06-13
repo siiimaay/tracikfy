@@ -6,6 +6,8 @@ class EmployeeData {
   final String department;
   final Company? company;
   final String? id;
+  final String? userId;
+  final String title;
 
 
   const EmployeeData( {
@@ -14,5 +16,7 @@ class EmployeeData {
     required this.company,
     required this.department,
     this.id,
+    this.userId,
+    required this.title,
   });
 }

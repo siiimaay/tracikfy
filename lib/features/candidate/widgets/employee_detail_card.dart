@@ -19,6 +19,7 @@ class EmployeeDetailCard extends StatelessWidget {
   final String status;
   final Company? company;
   final String? id;
+  final String? userId;
 
   const EmployeeDetailCard({
     super.key,
@@ -27,7 +28,9 @@ class EmployeeDetailCard extends StatelessWidget {
     required this.title,
     required this.department,
     required this.status,
-    required this.company, this.id,
+    required this.company,
+    this.id,
+    this.userId,
   });
 
   @override
@@ -38,7 +41,7 @@ class EmployeeDetailCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         child: ListTile(
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           isThreeLine: true,
           tileColor: Colors.white,
           titleAlignment: ListTileTitleAlignment.center,
@@ -47,14 +50,17 @@ class EmployeeDetailCard extends StatelessWidget {
             backgroundImage: AssetImage(Assets.images.userAvatar.path),
           ),
           onTap: () {
+            print("bir de dene $userId");
             context.push(
                 "${CandidateView.route}/${ExistingEmployeeDetailView.route}",
                 extra: EmployeeData(
                   name: name,
                   id: id,
                   status: status,
+                  userId: userId,
                   company: company,
                   department: department,
+                  title: title,
                 ));
           },
           title: Text(name),

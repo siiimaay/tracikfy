@@ -67,9 +67,8 @@ class _DetailItemState extends State<DetailItem> {
             )),
             Expanded(
               child: EditableText(
-
-                controller:
-                    widget.textEditingController ?? TextEditingController(text: widget.valueText),
+                controller: widget.textEditingController ??
+                    TextEditingController(text: widget.valueText),
                 focusNode: focusNode,
                 style: context.textStyle.detailText
                     .copyWith(color: const Color(0xff09093b)),

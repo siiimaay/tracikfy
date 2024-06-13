@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 
 import '../../../core/injection/locator.dart';
 import '../../../core/service/firestore_service.dart';
+import '../../candidate/data/employee.dart';
+import '../../candidate/data/employee_repository.dart';
 import '../../meeting/data/interview.dart';
 
 part 'dashboard_state.dart';
@@ -13,6 +15,7 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   DashboardCubit() : super(const DashboardState()) {
     fetchInterviews();
+    fetchTeamMembers();
   }
 
   void updateSelection(int index) {
@@ -26,5 +29,9 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(state.copyWith(interviews: interviews));
 
     }
+  }
+  void fetchTeamMembers() async {
+    final employees = await getIt.get<EmployeeRepository>().fetchEmployees() as List<Employee>;
+    emit(state.copyWith(employees: (employees)));
   }
 }

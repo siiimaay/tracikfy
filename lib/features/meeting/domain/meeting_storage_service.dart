@@ -76,7 +76,23 @@ class MeetingStorageService implements FirestoreService {
 
   @override
   Stream<List>? listenFetchRecords() {
-    // TODO: implement listenFetchRecords
-    throw UnimplementedError();
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) throw 'User id must not be null';
+
+      return _collection
+          .where('userId', isEqualTo: userId)
+          .snapshots()
+          .map((querySnapshot) {
+        List<Interview> interviews = [];
+        for (var doc in querySnapshot.docs) {
+          var data = doc.data();
+          interviews.add(Interview.fromJson(data));
+        }
+        return interviews;
+      });
+    } catch (e) {
+      return const Stream<List<Interview>>.empty();
+    }
   }
 }

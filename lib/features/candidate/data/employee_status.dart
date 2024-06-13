@@ -1,6 +1,6 @@
 enum EmployeeStatus {
   active(name: "Active"),
-  deactivated(name: "DEACTIVATED"),
+  deactivated(name: "Deactivated"),
   interviewing(name: "Interviewing"),
   onboarding(name: "Onboarding"),
   rejected(name: "Rejected");

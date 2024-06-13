@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:lottie/lottie.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:trackify/core/extensions/context_extension.dart';
+
 class LoadingModal extends StatefulWidget {
   @override
   _LoadingModalState createState() => _LoadingModalState();
@@ -10,6 +13,7 @@ class LoadingModal extends StatefulWidget {
 class _LoadingModalState extends State<LoadingModal> with TickerProviderStateMixin {
   bool _isLoading = true;
   double _score = 0;
+  String _resultMessage = 'Fetching result...';
 
   @override
   void initState() {
@@ -17,18 +21,49 @@ class _LoadingModalState extends State<LoadingModal> with TickerProviderStateMix
     _startLoading();
   }
 
-  void _startLoading() async {
-    await Future.delayed(const Duration(seconds: 5));
-    setState(() {
-      _isLoading = false;
-      _score = 75; // Example score after loading
-    });
-  }
-
-  void _reevaluate() {
+  Future<void> _startLoading() async {
     setState(() {
       _isLoading = true;
     });
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://ec2-18-195-97-43.eu-central-1.compute.amazonaws.com:8000/predict'), // Replace with your API endpoint
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, List<String>>{
+          'tweets': [
+            "Your compassion and empathy make a real difference.",
+            "You are valued and appreciated more than you know.",
+            "Your positive energy is truly motivating.",
+            "You are a beacon of light in a sometimes dark world."
+          ],
+        }),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jsonResponse = jsonDecode(response.body);
+        setState(() {
+          _isLoading = false;
+          _resultMessage = jsonResponse['result'];
+          _score = 75;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+          _resultMessage = 'Failed to fetch data: ${response.statusCode}';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _resultMessage = 'Error: $e';
+      });
+    }
+  }
+
+  void _reevaluate() {
     _startLoading();
   }
 
@@ -42,12 +77,12 @@ class _LoadingModalState extends State<LoadingModal> with TickerProviderStateMix
         child: Column(
           children: [
             const SizedBox(height: 24),
-             Text(
+            Text(
               'Cyberbullying evaluation',
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w500,
-                color: context.color.appThemeMainColor.withOpacity(0.8)
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                  color: context.color.appThemeMainColor.withOpacity(0.8)
               ),
             ),
             const SizedBox(height: 16),
@@ -104,7 +139,7 @@ class _LoadingModalState extends State<LoadingModal> with TickerProviderStateMix
                 ],
                 pointers: <GaugePointer>[
                   NeedlePointer(
-                    value: _score,
+                    value: _resultMessage == "This user is likely not a bully" ?  0 :  90,
                     needleColor: const Color(0xff09093b),
                     knobStyle: const KnobStyle(
                       color: Color(0xff09093b),
@@ -114,16 +149,7 @@ class _LoadingModalState extends State<LoadingModal> with TickerProviderStateMix
                   ),
                 ],
                 annotations: <GaugeAnnotation>[
-                  GaugeAnnotation(
-                    widget: Container(
-                      child: Text(
-                        '$_score',
-                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    angle: 90,
-                    positionFactor: 0.5,
-                  ),
+
                   GaugeAnnotation(
                     widget: Container(
                       child: Text(
@@ -140,9 +166,10 @@ class _LoadingModalState extends State<LoadingModal> with TickerProviderStateMix
           ),
           const SizedBox(height: 20),
           Text(
-            'Candidate Score: $_score',
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            'Candidate Score: $_resultMessage',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
+
         ],
       ),
     );

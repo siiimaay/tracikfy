@@ -11,6 +11,8 @@ class EmployeeDetailEvent with _$EmployeeDetailEvent {
   const factory EmployeeDetailEvent.fetchEmployees() = _FetchEmployees;
   const factory EmployeeDetailEvent.listenEmployees() = _ListenEmployees;
   const factory EmployeeDetailEvent.updateEmployee(dynamic data) = _UpdateEmployee;
+  const factory EmployeeDetailEvent.deleteEmployee(dynamic data) = _DeleteEmployee;
+
 
 
 

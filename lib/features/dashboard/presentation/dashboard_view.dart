@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:trackify/features/dashboard/presentation/dashboard_cubit.dart';
 import 'package:trackify/features/dashboard/presentation/widgets/bottom_bar_widget.dart';
 import 'package:trackify/features/dashboard/presentation/widgets/job_card_widget.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
+import '../../../core/injection/locator.dart';
+import '../../../core/service/firestore_service.dart';
 import '../../meeting/data/interview.dart';
 import '../../meeting/presentation/meeting_view.dart';
 
@@ -35,91 +38,58 @@ class HRDashboard extends StatelessWidget {
         create: (context) => DashboardCubit(),
         child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '| Jobs',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black.withOpacity(0.8),
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  SizedBox(
-                    height: 150,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5, // Number of jobs
-                      itemBuilder: (context, index) {
-                        return const JobCard(
-                          jobTitle: 'Software Engineer',
-                          company: 'Full time',
-                          positionsAvailable: 5,
-                          jobDepartment: 'Design',
-                          jobType: "",
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 32.0),
-                  Text(
-                    "| Plan for the day",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black.withOpacity(0.8),
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  BlocBuilder<DashboardCubit, DashboardState>(
-                      builder: (context, state) {
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: state.interviews
-                            .map(
-                              (interview) => SizedBox(
-                            width: 300,
-                            child: MeetingCard(
-                              time: DateTime.fromMillisecondsSinceEpoch(interview.time!).formatTime(),
-                              title: interview.title,
-                              isInMeetingPage: false,
-                              participantLength: interview.employees.length,
-                              description: interview.desc ?? "",
-                            ),
-                          ),
-                        )
-                            .toList(),
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "| Plan for the day",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black.withOpacity(0.8),
                       ),
-                    );
-                  }),
-
-                  /*
-                const SizedBox(height: 16.0),
-                const Text(
-                  'To-Do List',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    StreamBuilder<Object>(
+                        stream: getIt
+                            .get<FirestoreService>(
+                                instanceName: "interview_firestore")
+                            .listenFetchRecords(),
+                        builder: (context, snapshot) {
+                          return snapshot.hasData
+                              ? SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: (snapshot.data as List<Interview>)
+                                        .map(
+                                          (interview) => SizedBox(
+                                            width: 300,
+                                            child: MeetingCard(
+                                              time: DateTime
+                                                      .fromMillisecondsSinceEpoch(
+                                                          interview.time!)
+                                                  .formatTime(),
+                                              title: interview.title,
+                                              isInMeetingPage: false,
+                                              participantLength:
+                                                  interview.employees.length,
+                                              description: interview.desc ?? "",
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
+                                )
+                              : SizedBox();
+                        }),
+                    EmploymentStatusGauge(),
+                    const SizedBox(height: 16.0),
+                  ],
                 ),
-                const SizedBox(height: 8.0),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: 3, // Number of to-dos
-                    itemBuilder: (context, index) {
-                      return TodoCard(index: index);
-                    },
-                  ),
-                ),*/
-                ],
               ),
             ),
             const Align(
@@ -131,71 +101,128 @@ class HRDashboard extends StatelessWidget {
   }
 }
 
-class InterviewScheduleCard extends StatelessWidget {
-  final List<Interview> interviewees;
-
-  const InterviewScheduleCard({super.key, required this.interviewees});
-
+class EmploymentStatusGauge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Container(
-        width: 200,
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: interviewees
-                  .map((interviewee) => Text(
-                        '- ${interviewee.title}',
-                        style: const TextStyle(color: Colors.black),
-                      ))
-                  .toList(),
-            ),
-          ],
-        ),
-      ),
+    return BlocBuilder<DashboardCubit, DashboardState>(
+      builder: (context, state) {
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildEmploymentStatusTile(
+                title: 'Current Employee Status',
+                total: state.employees.length,
+                pointers: [
+                  _buildRangePointer(
+                      state.employees
+                          .where((element) => element.status == "Interviewing")
+                          .toList()
+                          .length
+                          .toDouble(),
+                      Colors.pink),
+                  _buildRangePointer(5, Colors.purple),
+                ],
+                details: [
+                  _buildStatusDetail('Current Employees', 5, 14, Colors.pink),
+                  _buildStatusDetail('Candidate', 19, 4, Colors.purple),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
-}
 
-class TodoCard extends StatelessWidget {
-  final int index;
-
-  const TodoCard({required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+  ExpansionTile _buildEmploymentStatusTile({
+    required String title,
+    required int total,
+    required List<GaugePointer> pointers,
+    required List<Widget> details,
+  }) {
+    return ExpansionTile(
+      tilePadding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(),
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
-      child: ListTile(
-        title: Text(
-          'To-Do ${index + 1}',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.green,
+      initiallyExpanded: true,
+      children: <Widget>[
+        Center(
+          child: SfRadialGauge(
+            axes: <RadialAxis>[
+              RadialAxis(
+                showLabels: false,
+                showTicks: false,
+                startAngle: 270,
+                endAngle: 270,
+                radiusFactor: 0.8,
+                axisLineStyle: AxisLineStyle(
+                  thicknessUnit: GaugeSizeUnit.factor,
+                  thickness: 0.15,
+                ),
+                annotations: <GaugeAnnotation>[
+                  GaugeAnnotation(
+                    angle: 90,
+                    positionFactor: 0.1,
+                    widget: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '$total',
+                          style: TextStyle(
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Total',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                pointers: pointers,
+              ),
+            ],
           ),
         ),
-        subtitle: Text(
-          'Description of To-Do ${index + 1}',
-          style: const TextStyle(color: Colors.grey),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: details,
+          ),
         ),
-        trailing: const Icon(Icons.check_circle, color: Colors.green),
-        onTap: () {
-          // Add your onTap logic here
-        },
+      ],
+    );
+  }
+
+  RangePointer _buildRangePointer(double value, Color color) {
+    return RangePointer(
+      value: value,
+      color: color,
+      cornerStyle: CornerStyle.bothCurve,
+      width: 0.15,
+      sizeUnit: GaugeSizeUnit.factor,
+    );
+  }
+
+  Widget _buildStatusDetail(
+      String label, double percentage, int count, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        children: [
+          Icon(Icons.circle, color: color, size: 16),
+          SizedBox(width: 8),
+          Text('$label ($percentage%)'),
+        ],
       ),
     );
   }

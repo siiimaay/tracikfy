@@ -10,14 +10,16 @@ class Company {
   final String workArea;
   final String phoneNo;
   final int? createdAt;
+  final bool isDeactivated;
 
-  Company({
+  Company( {
     this.id,
     required this.company,
     this.userId,
     required this.workArea,
     required this.phoneNo,
     this.createdAt,
+    this.isDeactivated = false,
   });
 
   factory Company.fromJson(Map<String, dynamic> json) =>

@@ -27,6 +27,16 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
       emit(MeetingLoadFailure());
     }
   }
+  Future<void> _onListenMeetings(LoadMeetings event, Emitter<MeetingState> emit) async {
+    try {
+      //await Future.delayed(Duration(seconds: 2));
+      final interviews =
+      await _interviewStorageService.listenFetchRecords() as List<Interview>;
+      emit(MeetingLoadSuccess(interviews));
+    } catch (_) {
+      emit(MeetingLoadFailure());
+    }
+  }
 
 
 }

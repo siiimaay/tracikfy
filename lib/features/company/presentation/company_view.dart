@@ -27,7 +27,7 @@ class CompanyView extends StatelessWidget {
           color: context.color.settingsBackColor,
           margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           child: Stack(
-            alignment: Alignment.center,
+            alignment: Alignment.topLeft,
             children: [
               BlocBuilder<CompanyCubit, CompanyState>(
                   buildWhen: (previous, current) =>
@@ -44,7 +44,8 @@ class CompanyView extends StatelessWidget {
                           "There is no company, let's create one!",
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              color: context.color.appThemeMainColor, fontSize: 16),
+                              color: context.color.appThemeMainColor,
+                              fontSize: 16),
                         ),
                       );
                     } else {
@@ -61,7 +62,10 @@ class CompanyView extends StatelessWidget {
                               return Center(
                                   child: Text('Error: ${snapshot.error}'));
                             } else if ((snapshot.data!).isNotEmpty) {
-                              final companyList = snapshot.data!;
+                              final companyList = snapshot.data!
+                                  .where((element) =>
+                                      element.isDeactivated != true)
+                                  .toList();
 
                               return GridView.builder(
                                 itemCount: companyList.length,
@@ -73,7 +77,9 @@ class CompanyView extends StatelessWidget {
                                 ),
                                 itemBuilder: (BuildContext context, int index) {
                                   return Frame(
-                                      label: companyList[index].company, company: companyList[index],);
+                                    label: companyList[index].company,
+                                    company: companyList[index],
+                                  );
                                 },
                               );
                             } else {

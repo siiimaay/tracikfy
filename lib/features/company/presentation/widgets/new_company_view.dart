@@ -74,7 +74,7 @@ class _NewCompanyDetailFormState extends State<NewCompanyDetailForm> {
                             Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Text(
-                                "| Add new Company",
+                                "| Add new company",
                                 style: context.textStyle.detailText.copyWith(
                                     color: context.color.appThemeMainColor,
                                     fontSize: 20),
