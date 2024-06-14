@@ -35,6 +35,7 @@ class EmployeeDetailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("namee $name");
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: Card(

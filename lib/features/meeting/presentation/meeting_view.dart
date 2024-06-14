@@ -52,7 +52,7 @@ class MeetingViewState extends State<MeetingView> {
                             color: Color(0xff9CA5D9)),
                         const SizedBox(width: 8),
                         Text(
-                          '30 May - 2023',
+                          '14 June - 2024',
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

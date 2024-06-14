@@ -41,7 +41,9 @@ class _ExistingEmployeeDetailViewState
   @override
   void initState() {
     super.initState();
-
+    employeeNameController.text = widget.employee.name;
+    workAreaController.text = widget.employee.title;
+    contactInfoController.text = widget.employee.department;
   }
 
   @override

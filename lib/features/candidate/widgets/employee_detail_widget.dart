@@ -94,7 +94,7 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                                 Icons.account_balance_outlined,
                                 color: const Color(0xff09093b).withOpacity(0.7),
                               ),
-                              textEditingController: employeeNameController,
+                              textEditingController: workAreaController,
                             ),
                             DetailItem(
                               text: "Social Media",
@@ -103,7 +103,7 @@ class _EmployeeDetailViewState extends State<EmployeeDetailView> {
                                 Icons.share,
                                 color: const Color(0xff09093b).withOpacity(0.7),
                               ),
-                              textEditingController: employeeNameController,
+                              textEditingController: contactInfoController,
                             ),
                             Flexible(
                               fit: FlexFit.loose,
