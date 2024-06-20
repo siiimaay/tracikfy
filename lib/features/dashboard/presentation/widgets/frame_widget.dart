@@ -7,22 +7,29 @@ import 'package:trackify/features/company/presentation/company_view.dart';
 import 'package:trackify/features/company/presentation/widgets/employee_image_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../../../company/data/company.dart';
+
 class Frame extends StatelessWidget {
   final Color? color;
   final String? label;
   final Function()? onTap;
+  final Company company;
 
   const Frame({
     Key? key,
     this.color,
     this.onTap,
     this.label,
+    required this.company,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.go("${CompanyView.route}/${CompanyDetailView.route}"),
+      onTap: () => context.go(
+        "${CompanyView.route}/${CompanyDetailView.route}",
+        extra: company,
+      ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         decoration: BoxDecoration(

@@ -3,13 +3,14 @@ import 'package:trackify/core/service/firestore_service.dart';
 
 import '../../../../core/injection/locator.dart';
 import '../company.dart';
+
 @injectable
 class CompanyRepository {
   static CompanyRepository? _instance;
   late final FirestoreService _companyStorageService;
 
   CompanyRepository._() {
-   _companyStorageService =getIt.get(instanceName: "company_firestore");
+    _companyStorageService = getIt.get(instanceName: "company_firestore");
   }
 
   factory CompanyRepository() {
@@ -17,16 +18,27 @@ class CompanyRepository {
   }
 
   Future<List?> fetchCompanies() async {
-  return await _companyStorageService.fetchRecords();
+    return await _companyStorageService.fetchRecords();
   }
 
   Future<void> deleteCompany(String id) async {
-     await _companyStorageService.deleteRecord(id: id);
+    await _companyStorageService.deleteRecord(id: id);
+  }
+
+  Future<void> updateCompany(Company company) async {
+    await _companyStorageService.updateRecord(
+      id: company.id,
+      data: company,
+    );
   }
 
   Future<void> saveCompany({
     required Company company,
   }) async {
     await _companyStorageService.saveRecord(data: company);
+  }
+
+  Stream<List<Company>> listenCompanies() {
+    return _companyStorageService.listenFetchRecords() as Stream<List<Company>>;
   }
 }

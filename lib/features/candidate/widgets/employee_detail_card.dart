@@ -1,18 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trackify/features/candidate/data/employee_status.dart';
+import 'package:trackify/features/candidate/data/employee_ui_model.dart';
 import 'package:trackify/features/candidate/employee_view.dart';
 import 'package:trackify/features/candidate/widgets/employee_detail_widget.dart';
+import 'package:trackify/features/candidate/widgets/existing_employee_detail_view.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../../company/data/company.dart';
+import '../data/employee.dart';
 import 'employee_label_widget.dart';
 
 class EmployeeDetailCard extends StatelessWidget {
   final String? profilePicturePath;
+  final String name;
+  final String title;
+  final String department;
+  final String status;
+  final Company? company;
+  final String? id;
+  final String? userId;
 
-  const EmployeeDetailCard({super.key, this.profilePicturePath});
+  const EmployeeDetailCard({
+    super.key,
+    this.profilePicturePath,
+    required this.name,
+    required this.title,
+    required this.department,
+    required this.status,
+    required this.company,
+    this.id,
+    this.userId,
+  });
 
   @override
   Widget build(BuildContext context) {
+    print("namee $name");
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: Card(
@@ -27,22 +50,32 @@ class EmployeeDetailCard extends StatelessWidget {
             radius: 20,
             backgroundImage: AssetImage(Assets.images.userAvatar.path),
           ),
-          onTap: (){
-            context.push("${CandidateView.route}/${EmployeeDetailView.route}");
-
+          onTap: () {
+            print("bir de dene $userId");
+            context.push(
+                "${CandidateView.route}/${ExistingEmployeeDetailView.route}",
+                extra: EmployeeData(
+                  name: name,
+                  id: id,
+                  status: status,
+                  userId: userId,
+                  company: company,
+                  department: department,
+                  title: title,
+                ));
           },
-          title: const Text("Simay Ekici"),
-          subtitle: const Column(
+          title: Text(name),
+          subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Software Engineer"),
+              Text(title),
               Text(
-                "Engineering",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                department,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),
-          trailing: const EmployeeStatusLabel(),
+          trailing: EmployeeStatusLabel(status: status ?? "ACTIVE"),
         ),
       ),
     );

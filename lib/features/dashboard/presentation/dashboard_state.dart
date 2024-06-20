@@ -2,12 +2,26 @@ part of 'dashboard_cubit.dart';
 
 final class DashboardState extends Equatable {
   final int currentIndex;
-  const DashboardState({this.currentIndex = 0});
+  final List<Interview> interviews;
+  final List<Employee> employees;
 
-  DashboardState copyWith({int? currentIndex}) {
-    return DashboardState(currentIndex: currentIndex ?? this.currentIndex);
+  const DashboardState(
+      {this.currentIndex = 0,
+      this.interviews = const [],
+      this.employees = const []});
+
+  DashboardState copyWith({
+    int? currentIndex,
+    List<Interview>? interviews,
+    List<Employee>? employees,
+  }) {
+    return DashboardState(
+      currentIndex: currentIndex ?? this.currentIndex,
+      interviews: interviews ?? this.interviews,
+      employees: employees ?? this.employees,
+    );
   }
 
   @override
-  List<Object?> get props => [currentIndex];
+  List<Object?> get props => [currentIndex, interviews, employees];
 }

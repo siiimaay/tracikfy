@@ -24,7 +24,6 @@ class CompanyStorageService implements FirestoreService {
   @override
   Future<List<Company>>? fetchRecords() {
     List<Company> companies = [];
-    print("asdadsadadawdASDSA");
 
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -36,11 +35,8 @@ class CompanyStorageService implements FirestoreService {
           .then((querySnapshot) {
         for (var doc in querySnapshot.docs) {
           var data = doc.data();
-          print(data);
           companies.add(Company.fromJson(data));
         }
-        print("should be $userId $companies");
-
 
         return companies;
       });
@@ -48,12 +44,33 @@ class CompanyStorageService implements FirestoreService {
       print(e);
       return null;
     }
-
   }
 
   @override
-  Future<void> updateRecord() {
-    throw UnimplementedError();
+  Future<void> updateRecord({String? id, required dynamic data}) async {
+    try {
+      // Extract the id from the data object
+      final documentId = (data as Company).id;
+
+      // Query the collection to find the document with the matching id field
+      QuerySnapshot querySnapshot =
+          await _collection.where('id', isEqualTo: documentId).get();
+      if (querySnapshot.docs.isNotEmpty) {
+        // Assuming there's only one document with the matching id
+        DocumentReference docRef = querySnapshot.docs.first.reference;
+
+        // Update the document with the data converted to JSON
+        await docRef.update(data.toJson());
+        print('Document ID: ${docRef.id}');
+
+        print('Document updated successfully');
+      } else {
+        print('No document found with the specified id.');
+      }
+    } catch (e) {
+      // Print an error message if an exception occurs
+      print('Error updating document: $e');
+    }
   }
 
   @override
@@ -66,7 +83,30 @@ class CompanyStorageService implements FirestoreService {
       workArea: data.workArea,
       phoneNo: data.phoneNo,
       userId: userId,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
     ).toJson();
     await _firebaseFirestore.collection('company').doc(id).set(company);
+  }
+
+  @override
+  Stream<List<Company>>? listenFetchRecords() {
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) throw 'User id must not be null';
+
+      return _collection
+          .where('userId', isEqualTo: userId)
+          .snapshots()
+          .map((querySnapshot) {
+        List<Company> companies = [];
+        for (var doc in querySnapshot.docs) {
+          var data = doc.data();
+          companies.add(Company.fromJson(data));
+        }
+        return companies;
+      });
+    } catch (e) {
+      return const Stream<List<Company>>.empty();
+    }
   }
 }
